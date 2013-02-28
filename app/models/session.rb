@@ -19,7 +19,6 @@ class Session < ActiveRecord::Base
 
   validates :service_id, :presence => true
   validate :preserve_prover_id
-  # validates_associated :service
 
   before_create :generate_token
 
