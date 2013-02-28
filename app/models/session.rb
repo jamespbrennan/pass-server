@@ -13,16 +13,15 @@
 #
 
 class Session < ActiveRecord::Base
-  attr_accessible :ip_address, :token, :user_agent
 
   belongs_to :service
   has_one :prover
 
   validates :service_id, :presence => true
+  validate :preserve_prover_id
   # validates_associated :service
 
   before_create :generate_token
-  before_save :preserver_prover_id
 
   private
 
@@ -31,14 +30,17 @@ class Session < ActiveRecord::Base
   # Create the nonce for the session
   #
   def generate_token
-  	begin
-  		self.token = SecureRandom.hex
-  	end
+		self.token = SecureRandom.hex
   end
 
+  # Preserve Prover ID
+  #
+  # Do not let prover ids that have been set, be updated
+  #
   def preserve_prover_id
-    begin
-      # if(self.prover)
+    if(self.prover_id_changed? && self.prover_id_was != nil)
+      errors.add(:prover_id, 'You cannot update a prover id that has already been set.')
     end
   end
+
 end

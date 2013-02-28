@@ -3,8 +3,8 @@ require 'api_constraints'
 PassServer::Application.routes.draw do
 
   scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
-    match 'sessions/create' => 'sessions#create'
-    match 'sessions/get' => 'sessions#get'
+    get 'sessions/create' => 'sessions#create'
+    get 'sessions/get' => 'sessions#get'
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
