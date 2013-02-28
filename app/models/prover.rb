@@ -8,13 +8,13 @@
 #  updated_at     :datetime         not null
 #  device_type_id :integer
 #  name           :string(255)
+#  user_id        :integer
 #
 
 class Prover < ActiveRecord::Base
-  attr_accessible :public_key
-
   belongs_to :device_type
-  belongs_to :session
+  belongs_to :user
+  has_many :session
 
   validates :public_key, :device_type_id, :presence => true
   validates_associated :device_type

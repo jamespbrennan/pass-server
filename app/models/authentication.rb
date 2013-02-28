@@ -11,7 +11,6 @@
 #
 
 class Authentication < ActiveRecord::Base
-  attr_accessible :ip_address
-
-  has_one :prover
+  belongs_to :prover
+  belongs_to :service
 end

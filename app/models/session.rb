@@ -13,9 +13,8 @@
 #
 
 class Session < ActiveRecord::Base
-
   belongs_to :service
-  has_one :prover
+  belongs_to :prover
 
   validates :service_id, :presence => true
   validate :preserve_prover_id

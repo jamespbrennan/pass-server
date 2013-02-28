@@ -11,8 +11,6 @@
 #
 
 class Service < ActiveRecord::Base
-  attr_accessible :access_token, :allowed_ip_addresses, :name
-
   has_many :session
 
   before_create :generate_access_token
