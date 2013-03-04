@@ -60,14 +60,7 @@ module V1
 			# Decrypt the provided token with the prover's public key
 			plaintext_token = public_key.public_decrypt Base64::decode64(params[:token])
 
-			if plaintext_token == session.token
-				# Successful authentication!
-				render :json => {
-					:message => "Successful authentication.",
-					:code => 200
-				}.to_json, :status => :success
-				return
-			else
+			if plaintext_token != session.token
 				# Unsuccessful authentication
 				render :json => {
 				  :errors => {

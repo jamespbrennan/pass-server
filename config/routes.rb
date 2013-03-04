@@ -6,6 +6,8 @@ PassServer::Application.routes.draw do
     get 'sessions/create' => 'sessions#create'
     get 'sessions/get' => 'sessions#get'
     get 'sessions/authenticate' => 'sessions#authenticate'
+
+    get 'provers/create' => 'provers#create'
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
