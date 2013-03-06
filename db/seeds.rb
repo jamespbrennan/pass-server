@@ -7,16 +7,19 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 devicetypes = DeviceType.create([
 	{name: 'Unknown', identifier: '', manufacturer: 'Unknown'},
-	{name: 'iPhone 5', identifier: 'A1428', manufacturer: 'Apple'}, 	# 2012 GSM model
-	{name: 'iPhone 5', identifier: 'A1429', manufacturer: 'Apple'}, 	# 2012 GSM and CDMA models
-	{name: 'iPhone 5', identifier: 'A1442', manufacturer: 'Apple'}, 	# 2012 CDMA China
-	{name: 'iPhone 4S', identifier: 'A1387', manufacturer: 'Apple'}, 	# 2011
-	{name: 'iPhone 4S', identifier: 'A1431', manufacturer: 'Apple'}, 	# 2011 GSM China
-	{name: 'iPhone 4S', identifier: 'A1349', manufacturer: 'Apple'}, 	# 2011 CDMA model
-	{name: 'iPhone 4S', identifier: 'A1332', manufacturer: 'Apple'}, 	# 2010 GSM model
-	{name: 'iPhone 3GS', identifier: 'A1325', manufacturer: 'Apple'}, 	# 2009 China
-	{name: 'iPhone 3GS', identifier: 'A1303', manufacturer: 'Apple'}, 	# 2009
-	{name: 'iPhone 3G', identifier: 'A1324', manufacturer: 'Apple'}, 	# 2009 China
-	{name: 'iPhone 3G', identifier: 'A1241', manufacturer: 'Apple'}, 	# 2008
-	{name: 'iPhone', identifier: 'A1203', manufacturer: 'Apple'}, 		# 2007
+	{name: 'iPhone Simulator', identifier: 'i386', manufacturer: 'Apple'},
+	{name: 'iPod Touch', identifier: 'iPod1,1', manufacturer: 'Apple'},
+	{name: 'iPod Touch (Second Generation)', identifier: 'iPod2,1', manufacturer: 'Apple'},
+	{name: 'iPod Touch (Third Generation)', identifier: 'iPod3,1', manufacturer: 'Apple'},
+	{name: 'iPod Touch (Fourth Generation)', identifier: 'iPod4,1', manufacturer: 'Apple'},
+	{name: 'iPhone', identifier: 'iPhone1,1', manufacturer: 'Apple'},
+	{name: 'iPhone 3G', identifier: 'iPhone1,2', manufacturer: 'Apple'},
+	{name: 'iPhone 3GS', identifier: 'iPhone2,1', manufacturer: 'Apple'},
+	{name: 'iPad', identifier: 'iPad1,1', manufacturer: 'Apple'},
+	{name: 'iPad 2', identifier: 'iPad2,1', manufacturer: 'Apple'},
+	{name: 'iPad', identifier: 'iPad3,1', manufacturer: 'Apple'},
+	{name: 'iPhone 4', identifier: 'iPhone3,1', manufacturer: 'Apple'},
+	{name: 'iPhone 4S', identifier: 'iPhone4,1', manufacturer: 'Apple'},
+	{name: 'iPhone 5', identifier: 'iPhone5,1', manufacturer: 'Apple'},
+	{name: 'iPhone 5', identifier: 'iPhone5,2', manufacturer: 'Apple'},
 ])
