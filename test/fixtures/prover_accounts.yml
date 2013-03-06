@@ -1,0 +1,23 @@
+# == Schema Information
+#
+# Table name: prover_accounts
+#
+#  id         :integer          not null, primary key
+#  public_key :string(255)
+#  prover_id  :integer
+#  service_id :integer
+#  created_at :datetime
+#  updated_at :datetime
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  public_key: MyString
+  prover_id: 
+  service_id: 
+
+two:
+  public_key: MyString
+  prover_id: 
+  service_id: 

@@ -6,8 +6,8 @@
 #  name                 :string(255)
 #  access_token         :string(255)
 #  allowed_ip_addresses :string(255)
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
+#  created_at           :datetime
+#  updated_at           :datetime
 #
 
 class Service < ActiveRecord::Base

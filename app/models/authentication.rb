@@ -4,8 +4,8 @@
 #
 #  id         :integer          not null, primary key
 #  ip_address :string(255)
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  created_at :datetime
+#  updated_at :datetime
 #  prover_id  :integer
 #  service_id :integer
 #

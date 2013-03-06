@@ -6,8 +6,8 @@
 #  ip_address :string(255)
 #  user_agent :string(255)
 #  token      :string(255)
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  created_at :datetime
+#  updated_at :datetime
 #  service_id :integer
 #  prover_id  :integer
 #
