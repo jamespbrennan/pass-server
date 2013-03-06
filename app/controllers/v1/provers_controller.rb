@@ -1,5 +1,5 @@
 module V1
-	class SessionsController < ApplicationController
+	class SessionsController < ApiController
 		respond_to :json
 
 		def create

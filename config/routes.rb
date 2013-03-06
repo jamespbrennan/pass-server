@@ -10,6 +10,11 @@ PassServer::Application.routes.draw do
     get 'provers/create' => 'provers#create'
   end
 
+  get "prover/edit"
+  get "prover/show"
+  get "prover/update"
+  get "prover/destroy"
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
