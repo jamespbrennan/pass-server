@@ -18,8 +18,8 @@ ActiveRecord::Schema.define(version: 20130228221400) do
 
   create_table "authentications", force: true do |t|
     t.string   "ip_address"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "prover_id"
     t.integer  "service_id"
   end
@@ -27,16 +27,16 @@ ActiveRecord::Schema.define(version: 20130228221400) do
   create_table "device_types", force: true do |t|
     t.string   "name"
     t.string   "identifier"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "manufacturer"
     t.string   "model"
   end
 
   create_table "provers", force: true do |t|
     t.string   "public_key"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "device_type_id"
     t.string   "name"
     t.integer  "user_id"
@@ -45,17 +45,17 @@ ActiveRecord::Schema.define(version: 20130228221400) do
   create_table "services", force: true do |t|
     t.string   "name"
     t.string   "access_token"
-    t.string   "allowed_ip_addresses"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.string   "allowed_ip_addresses", array: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "sessions", force: true do |t|
     t.string   "ip_address"
     t.string   "user_agent"
     t.string   "token"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "service_id"
     t.integer  "prover_id"
   end
