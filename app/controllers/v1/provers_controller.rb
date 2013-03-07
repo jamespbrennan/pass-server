@@ -3,9 +3,22 @@ module V1
 		respond_to :json
 
 		def create
-			params.required(:user_id)
+			params.required(:email)
+			params.required(:password)
 			params.permit(:name)
 			params.permit(:device_identifier)
+
+			# Authenticate the user
+			user = User.find_by_email(params[:email])
+
+			if ! (user && user.authenticate(params[:password]))
+				return render :json => {
+					:errors => {
+						:message => "Invalid email and password combination.",
+						:code => 401
+					}
+				}.to_json, :status => :unauthorized
+			end
 
 			@prover = Prover.new
 
@@ -23,7 +36,7 @@ module V1
 
 			@prover.device_type_id = (defined? device.id) ? device.id : nil
 
-			@prover.user_id = params[:user_id]
+			@prover.user_id = user.id
 			@prover.name = (defined? params[:name]) ? params[:name] : nil
 			
 			@prover.save
