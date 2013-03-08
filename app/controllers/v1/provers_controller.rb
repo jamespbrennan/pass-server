@@ -81,11 +81,9 @@ module V1
 			attributes = params.required(:prover_id).required(:service_id).required(:public_key)
 			params.required(:signature)
 
-			# Check the MAC
-			prover = Prover.find(:prover_id)
-			message = attributes.map{|k,v| "#{v}"}.join(":")
-
 			# Make sure the prover exists
+			prover = Prover.find(:prover_id)
+
 			if ! prover.nil?
 				return render :json => {
 					:errors => {
@@ -96,6 +94,8 @@ module V1
 			end
 
 			# Make sure the given signature is valid
+			message = attributes.map{|k,v| "#{v}"}.join(":")
+
 			if ! verify_signature(prover.auth_token, message, params[:signature])
 				return render :json => {
 					:errors => {
@@ -166,7 +166,7 @@ module V1
 		#
 		# Show a 404 error on an ActiveRecord::RecordNotFound exception.
 		#
-		
+
 		def record_not_found
 			render :json => {
 			  :errors => {
