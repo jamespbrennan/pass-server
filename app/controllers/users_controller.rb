@@ -4,8 +4,12 @@ class UsersController < ApplicationController
 	end
 
 	def create
-		@user = User.new(params[:user])
+		attributes = params.required(:user).permit(:email,:password,:password_confirmation)
+
+		@user = User.new(attributes)
+		
 		if @user.save
+			session[:user_id] = @user.id
 			redirect_to root_url
 		else
 			render "new"

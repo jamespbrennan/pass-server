@@ -11,6 +11,15 @@ PassServer::Application.routes.draw do
     post 'provers/register' => 'provers#register'
   end
 
+  get 'signup', to: 'users#new', as: 'signup'
+  get 'login', to: 'sessions#new', as: 'login'
+  get 'logout', to: 'sessions#destroy', as: 'logout'
+
+  root to: 'provers#index'
+
+  resources :users
+  resources :sessions
+
   get "prover/edit"
   get "prover/show"
   get "prover/update"
