@@ -1,2 +1,2 @@
 object @prover
-attributes :id, :name, :created_at
+attributes :id, :name, :access_token, :created_at

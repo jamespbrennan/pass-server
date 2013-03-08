@@ -7,6 +7,10 @@ class ApiController < ActionController::Base
 
 	private
 
+	#
+	# Show a 404 error on an ActiveRecord::RecordNotFound exception.
+	#
+	
 	def record_not_found
 		render :json => {
 			:errors => {
