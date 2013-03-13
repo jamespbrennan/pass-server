@@ -28,6 +28,10 @@ gem 'rabl'
 # To use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.0.0'
 
+gem 'rails-observers'
+
+# gem 'delayed_job_active_record', :git => 'git://github.com/collectiveidea/delayed_job_active_record.git'
+
 # Use unicorn as the app server
 # gem 'unicorn'
 
