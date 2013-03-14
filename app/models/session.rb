@@ -8,9 +8,9 @@
 #  token            :string(255)
 #  created_at       :datetime
 #  updated_at       :datetime
-#  service_id       :integer
-#  device_id        :integer
 #  is_authenticated :boolean
+#  device_id        :integer
+#  service_id       :integer
 #
 
 class Session < ActiveRecord::Base

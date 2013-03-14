@@ -11,26 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130313231647) do
+ActiveRecord::Schema.define(version: 20130314062056) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "authentications", force: true do |t|
-    t.string   "ip_address"
+  create_table "device_accounts", force: true do |t|
+    t.string   "public_key"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "prover_id"
+    t.integer  "device_id"
     t.integer  "service_id"
   end
 
-  create_table "device_accounts", force: true do |t|
-    t.string   "public_key"
-    t.integer  "device_id"
-    t.integer  "service_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
+  add_index "device_accounts", ["device_id"], name: "index_device_accounts_on_device_id"
+  add_index "device_accounts", ["service_id"], name: "index_device_accounts_on_service_id"
 
   create_table "device_types", force: true do |t|
     t.string   "name"
@@ -46,9 +41,11 @@ ActiveRecord::Schema.define(version: 20130313231647) do
     t.datetime "updated_at"
     t.integer  "device_type_id"
     t.string   "name"
-    t.integer  "user_id"
     t.string   "access_token"
+    t.integer  "user_id"
   end
+
+  add_index "devices", ["user_id"], name: "index_devices_on_user_id"
 
   create_table "services", force: true do |t|
     t.string   "name"
@@ -64,10 +61,13 @@ ActiveRecord::Schema.define(version: 20130313231647) do
     t.string   "token"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "service_id"
-    t.integer  "prover_id"
     t.boolean  "is_authenticated"
+    t.integer  "device_id"
+    t.integer  "service_id"
   end
+
+  add_index "sessions", ["device_id"], name: "index_sessions_on_device_id"
+  add_index "sessions", ["service_id"], name: "index_sessions_on_service_id"
 
   create_table "users", force: true do |t|
     t.string   "email"
