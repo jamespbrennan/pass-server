@@ -30,7 +30,7 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 
 gem 'rails-observers'
 
-# gem 'delayed_job_active_record', :git => 'git://github.com/collectiveidea/delayed_job_active_record.git'
+gem "delayed_job_active_record", "~> 4.0.0.beta1"
 
 # Use unicorn as the app server
 # gem 'unicorn'
