@@ -1,7 +1,7 @@
 <div>
 	<% @devices.each do |d| %>
 	<article>
-		<h1><%= d.name %></h1><%= d.inspect %>
+		<h1><%= d.name %></h1><%= d.device_type.name %>
 	</article>
 	<% end %>
 </div>
