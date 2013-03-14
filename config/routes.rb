@@ -7,23 +7,19 @@ PassServer::Application.routes.draw do
     get 'sessions/get' => 'sessions#get'
     post 'sessions/authenticate' => 'sessions#authenticate'
 
-    post 'provers/create' => 'provers#create'
-    post 'provers/register' => 'provers#register'
+    post 'devices/create' => 'devices#create'
+    post 'devices/register' => 'devices#register'
   end
 
   get 'signup', to: 'users#new', as: 'signup'
   get 'login', to: 'sessions#new', as: 'login'
   get 'logout', to: 'sessions#destroy', as: 'logout'
 
-  root to: 'provers#index'
+  root to: 'devices#index'
 
   resources :users
   resources :sessions
-
-  get "prover/edit"
-  get "prover/show"
-  get "prover/update"
-  get "prover/destroy"
+  resources :device
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

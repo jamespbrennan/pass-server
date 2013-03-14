@@ -1,2 +1,2 @@
 object @user
-attributes :id, :email, :prover_id, :created_at
+attributes :id, :email, :device_id, :created_at

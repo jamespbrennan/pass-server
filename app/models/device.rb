@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: provers
+# Table name: devices
 #
 #  id             :integer          not null, primary key
 #  created_at     :datetime
@@ -11,11 +11,11 @@
 #  access_token   :string(255)
 #
 
-class Prover < ActiveRecord::Base
+class Device < ActiveRecord::Base
   belongs_to :device_type
   belongs_to :user
   has_many :session
-  has_many :prover_account
+  has_many :device_account
 
   validates :user_id, :presence => true
 
@@ -25,7 +25,7 @@ class Prover < ActiveRecord::Base
 
   # Generate Access Token
   #
-  # Create the secret key for the prover to authenticate to the API with.
+  # Create the secret key for the device to authenticate to the API with.
   # Ensure that another record with the same access_token does not exist.
   #
   def generate_access_token

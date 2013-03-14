@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ProverAccountTest < ActiveSupport::TestCase
+class DeviceAccountTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

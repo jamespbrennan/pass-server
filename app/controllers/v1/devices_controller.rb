@@ -1,10 +1,10 @@
 include 
 module V1
-	class ProversController < ApiController
+	class DevicesController < ApiController
 		respond_to :json
 
 		# 
-		# Create a prover 
+		# Create a device 
 		#
 		# Required parameters:
 		# => email
@@ -38,9 +38,9 @@ module V1
 				}.to_json, :status => :unauthorized
 			end
 
-			@prover = Prover.new
+			@device = Device.new
 
-			# Attach a device type to the prover
+			# Attach a device type to the device
 			if params[:device_identifier]
 				device_type = DeviceTypes.find_by_identifier(params[:device_identifier])
 
@@ -52,42 +52,42 @@ module V1
 				device_type = DeviceTypes.find_by_identifier('')
 			end
 
-			@prover.device_type_id = (defined? device.id) ? device.id : nil
+			@device.device_type_id = (defined? device.id) ? device.id : nil
 
-			@prover.user_id = user.id
-			@prover.name = (defined? params[:name]) ? params[:name] : nil
+			@device.user_id = user.id
+			@device.name = (defined? params[:name]) ? params[:name] : nil
 			
-			@prover.save
+			@device.save
 
 			error_check
 		end
 
 		#
-		# Register a prover to a service.
+		# Register a device to a service.
 		#
 		# Reqired parameters:
-		# => prover_id
+		# => device_id
 		# => service_id
 		# => public_key
-		# => signature = hmac_sha1(prover.auth_token, <prover_id>:<service_id>:<public_key>)
+		# => signature = hmac_sha1(device.auth_token, <device_id>:<service_id>:<public_key>)
 		#
 		# Returns:
-		# => prover_id
+		# => device_id
 		# => service_id
 		# => created_at
 		#
 
 		def register
-			attributes = params.required(:prover_id).required(:service_id).required(:public_key)
+			attributes = params.required(:device_id).required(:service_id).required(:public_key)
 			params.required(:signature)
 
-			# Make sure the prover exists
-			prover = Prover.find(:prover_id)
+			# Make sure the device exists
+			device = Device.find(:device_id)
 
-			if ! prover.nil?
+			if ! device.nil?
 				return render :json => {
 					:errors => {
-						:message => "Unable to find prover for given prover id.",
+						:message => "Unable to find device for given device id.",
 						:code => 404
 					}
 				}.to_json, :status => :not_found
@@ -96,7 +96,7 @@ module V1
 			# Make sure the given signature is valid
 			message = attributes.map{|k,v| "#{v}"}.join(":")
 
-			if ! verify_signature(prover.auth_token, message, params[:signature])
+			if ! verify_signature(device.auth_token, message, params[:signature])
 				return render :json => {
 					:errors => {
 						:message => "Invalid signature.",
@@ -107,7 +107,7 @@ module V1
 
 			# Check the public key
 			begin
-				# Create an RSA object from the prover's public key to test if it is valid
+				# Create an RSA object from the device's public key to test if it is valid
 				public_key = OpenSSL::PKey::RSA.new params[:public_key]
 			rescue OpenSSL::PKey::RSAError
 				return render :json => {
@@ -128,9 +128,9 @@ module V1
 				}.to_json, :status => :error
 			end
 
-			ProverAccount.create(attributes)
+			DeviceAccount.create(attributes)
 
-			error_check_prover_account
+			error_check_device_account
 		end
 
 		private
@@ -143,10 +143,10 @@ module V1
 		def error_check
 			render :json => {
 			  :errors => {
-				:message => @prover.errors.full_messages,
+				:message => @device.errors.full_messages,
 				:code => 500
 			  }
-			}.to_json, :status => :error if ! @prover.valid?
+			}.to_json, :status => :error if ! @device.valid?
 		end
 
 		#
@@ -154,13 +154,13 @@ module V1
 		# if any are found.
 		#
 
-		def error_check_prover_account
+		def error_check_device_account
 			render :json => {
 			  :errors => {
-				:message => @prover_account.errors.full_messages,
+				:message => @device_account.errors.full_messages,
 				:code => 500
 			  }
-			}.to_json, :status => :error if ! @prover_account.valid?
+			}.to_json, :status => :error if ! @device_account.valid?
 		end
 
 		#
@@ -170,7 +170,7 @@ module V1
 		def record_not_found
 			render :json => {
 			  :errors => {
-				:message => "Sorry, couldn't find that prover.",
+				:message => "Sorry, couldn't find that device.",
 				:code => 404
 			  }
 			}.to_json, :status => :not_found

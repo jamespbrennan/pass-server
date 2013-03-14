@@ -9,16 +9,16 @@
 #  created_at       :datetime
 #  updated_at       :datetime
 #  service_id       :integer
-#  prover_id        :integer
+#  device_id        :integer
 #  is_authenticated :boolean
 #
 
 class Session < ActiveRecord::Base
   belongs_to :service
-  belongs_to :prover
+  belongs_to :device
 
   validates :service_id, :presence => true
-  validate :preserve_prover_id
+  validate :preserve_device_id
 
   before_create :generate_token
 
@@ -32,13 +32,13 @@ class Session < ActiveRecord::Base
 		self.token = SecureRandom.hex
   end
 
-  # Preserve Prover ID
+  # Preserve Device ID
   #
-  # Do not let prover ids that have been set, be updated
+  # Do not let device ids that have been set, be updated
   #
-  def preserve_prover_id
-    if(self.prover_id_changed? && self.prover_id_was != nil)
-      errors.add(:prover_id, 'You cannot update a prover id that has already been set.')
+  def preserve_device_id
+    if(self.device_id_changed? && self.device_id_was != nil)
+      errors.add(:device_id, 'You cannot update a device id that has already been set.')
     end
   end
 

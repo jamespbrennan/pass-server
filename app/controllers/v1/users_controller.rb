@@ -12,7 +12,7 @@ module V1
 		# Returns:
 		# => id
 		# => email
-		# => prover_id
+		# => device_id
 		# => created_at
 		#
 
@@ -34,10 +34,10 @@ module V1
 		def error_check
 			render :json => {
 			  :errors => {
-				:message => @prover.errors.full_messages,
+				:message => @device.errors.full_messages,
 				:code => 500
 			  }
-			}.to_json, :status => :error if ! @prover.valid?
+			}.to_json, :status => :error if ! @device.valid?
 		end
 
 		#
@@ -47,7 +47,7 @@ module V1
 		def record_not_found
 			render :json => {
 			  :errors => {
-				:message => "Sorry, couldn't find that prover.",
+				:message => "Sorry, couldn't find that device.",
 				:code => 404
 			  }
 			}.to_json, :status => :not_found

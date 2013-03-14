@@ -25,27 +25,27 @@ module V1
 
 		def get
 			params.required(:id)
-			params.permit(:prover_id)
+			params.permit(:device_id)
 
 			@session = Session.find(params[:id])
 
-			@session.prover_id = params[:prover_id]
+			@session.device_id = params[:device_id]
 			@session.save
 
 			error_check
 		end
 
 		#
-		# Authenticate a prover
+		# Authenticate a device
 		#
 		# Requred parameters:
-		# => prover_id
+		# => device_id
 		# => session_id
 		# => token
 		#
 
 		def authenticate
-			params.required(:prover_id)
+			params.required(:device_id)
 			params.required(:session_id)
 			params.required(:token)
 
@@ -55,41 +55,41 @@ module V1
 				return record_not_found
 			end
 
-			# Make sure the prover belongs to the session
-			if session.prover_id != params[:prover_id]
+			# Make sure the device belongs to the session
+			if session.device_id != params[:device_id]
 				return render :json => {
 					:errors => {
-						:message => "Prover does not match the session.",
+						:message => "Device does not match the session.",
 						:code => 500
 					}
 				}.to_json, :status => :error
 			end
 
-			prover = Prover.find(params[:prover_id])
+			device = Device.find(params[:device_id])
 
-			if prover.nil?
+			if device.nil?
 				return render :json => {
 					:errors => {
-						:message => "Unable to find the prover specified.",
+						:message => "Unable to find the device specified.",
 						:code => 500
 					}
 				}.to_json, :status => :error
 			end
 
 			begin
-				# Create an RSA object from the prover's public key
-				public_key = OpenSSL::PKey::RSA.new prover.public_key
+				# Create an RSA object from the device's public key
+				public_key = OpenSSL::PKey::RSA.new device.public_key
 			rescue OpenSSL::PKey::RSAError
 				render :json => {
 				  :errors => {
-					:message => "A public key is not available for the prover.",
+					:message => "A public key is not available for the device.",
 					:code => 500
 				  }
 				}.to_json, :status => :error
 				return
 			end
 			
-			# Decrypt the provided token with the prover's public key
+			# Decrypt the provided token with the device's public key
 			plaintext_token = public_key.public_decrypt Base64::decode64(params[:token])
 
 			if plaintext_token != session.token
