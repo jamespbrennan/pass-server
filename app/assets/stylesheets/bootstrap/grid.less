@@ -9,7 +9,7 @@
 }
 
 // Mobile-first defaults
-.row {
+.row, article {
   margin-left:  (@grid-gutter-width / -2);
   margin-right: (@grid-gutter-width / -2);
   .clear_float();
@@ -48,7 +48,7 @@
   .container {
     max-width: 1170px;
   }
-  .row {
+  .row, article {
     margin-left: -15px;
     margin-right: -15px;
   }
@@ -61,4 +61,17 @@
 // Reset utility classes due to specificity
 [class*="span"].pull-right {
   float: right;
+}
+
+.login-form {
+  .make-column(4);
+  .make-column-offset(4);
+}
+
+.device {
+  .make-column(10);
+}
+
+.device-actions {
+  .make-column(2);
 }
