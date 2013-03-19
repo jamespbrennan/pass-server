@@ -2,8 +2,7 @@ module V1
 	class SessionsController < ApiController
 		respond_to :json
 
-		#
-		# Create a session.
+		# == Create a session.
 		#
 		# Required parameters:
 		# => service_id
@@ -23,13 +22,12 @@ module V1
 			error_check
 		end
 
-		#
-		# Get a session
+		# == Get a session
 		#
 		# Required parameters:
 		# => id
 		#
-		# Returns login QR code
+		# Returns login QR code HTML
 		#
 
 		def get
@@ -37,14 +35,10 @@ module V1
 
 			@session = Session.find(params[:id])
 
-			@session.device_id = params[:device_id]
-			@session.save
-
-			error_check
+			# render 'get.html.erb'
 		end
 
-		#
-		# Authenticate a device
+		# == Authenticate a device
 		#
 		# Requred parameters:
 		# => device_id
@@ -114,6 +108,7 @@ module V1
 
 		private
 
+		# == Error Check
 		#
 		# Check for active record errors. Set status header to 500 and display errors as JSON 
 		# if any are found.
@@ -128,6 +123,7 @@ module V1
 			}.to_json, :status => :error if ! @session.valid?
 		end
 
+		# == Record Not Found
 		#
 		# Show a 404 error on an ActiveRecord::RecordNotFound exception.
 		#

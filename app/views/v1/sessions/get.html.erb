@@ -1,1 +1,11 @@
-get.html.erb
+<html>
+  <head>
+    <title>Pass</title>
+    <%= javascript_include_tag "qrcode" %>
+    <%= javascript_include_tag "socket.io" %>
+    <%= javascript_include_tag "sessions/get" %>
+  </head>
+  <body>
+    <div id="qr-wrapper" data-token="<%= @session.token %>" data-session-id="<%= @session.id %>" data-service-id="<%= @session.service_id %>"></div>
+  </body>
+</html>
