@@ -13,14 +13,11 @@ window.onload = () ->
   # Connect to the Socket.IO server
   socket = io.connect('http://localhost:8080')
 
-  socket.on('ready', (message) ->
-    console.log('Joined to the room: ', message)
-  )
-
+  # When the session is updated, notify the parent page
   socket.on('session_updated', (message) ->
-    console.log('Session updated: ', message)
+    iframe = document.getElementsById('pass-login')
+    iframe.contentWindow.postMessage(message, 'http://localhost')
   )
 
+  # Subscribe to a room based on the session_id
   socket.emit('subscribe', qr_wrapper.dataset.sessionId)
-
-  window.socket = socket
