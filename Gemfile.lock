@@ -39,11 +39,6 @@ GEM
       execjs
     coffee-script-source (1.6.1)
     commonjs (0.2.6)
-    delayed_job (4.0.0.beta1)
-      activesupport (>= 3.0, < 4.1)
-    delayed_job_active_record (4.0.0.beta1)
-      activerecord (>= 3.0, < 4.1)
-      delayed_job (~> 4.0.0.beta1)
     erubis (2.7.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
@@ -64,7 +59,7 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.21)
-    minitest (4.6.2)
+    minitest (4.7.0)
     multi_json (1.7.1)
     pg (0.14.1)
     polyglot (0.3.3)
@@ -92,11 +87,8 @@ GEM
     rake (10.0.3)
     rdoc (3.12.2)
       json (~> 1.4)
+    redis (3.0.3)
     ref (1.0.3)
-    rest-client (1.6.7)
-      mime-types (>= 1.16)
-    socketio-client (0.0.3)
-      rest-client
     sprockets (2.9.0)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -130,14 +122,13 @@ DEPENDENCIES
   annotate (>= 2.5.0)
   bcrypt-ruby (~> 3.0.0)
   coffee-rails (~> 4.0.0.beta1)
-  delayed_job_active_record (~> 4.0.0.beta1)
   jquery-rails
   less-rails
   pg
   rabl
   rails (= 4.0.0.beta1)
   rails-observers
-  socketio-client
+  redis
   therubyracer
   turbolinks
   uglifier (>= 1.0.3)

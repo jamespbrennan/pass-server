@@ -48,13 +48,8 @@ class Session < ActiveRecord::Base
   #
   def report_updated
     data = {id: self.id, is_authenticated: self.is_authenticated}
-    # Pass::Messenger.send_message('session_updated', {id: self.id, is_authenticated: self.is_authenticated})
-    client = SocketIO.connect("http://127.0.0.1:8080") do
-      after_start do
-        emit('session_updated', data)
-        disconnect
-      end
-    end
+
+    $redis.publish 'session_updated', data.to_json
   end
 
 end

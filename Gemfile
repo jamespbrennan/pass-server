@@ -33,8 +33,7 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 
 gem 'rails-observers'
 
-gem 'delayed_job_active_record', '~> 4.0.0.beta1'
-gem 'socketio-client'
+gem 'redis'
 
 # Use unicorn as the app server
 # gem 'unicorn'
