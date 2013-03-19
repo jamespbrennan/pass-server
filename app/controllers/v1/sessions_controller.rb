@@ -23,9 +23,17 @@ module V1
 			error_check
 		end
 
+		#
+		# Get a session
+		#
+		# Required parameters:
+		# => id
+		#
+		# Returns login QR code
+		#
+
 		def get
 			params.required(:id)
-			params.permit(:device_id)
 
 			@session = Session.find(params[:id])
 
