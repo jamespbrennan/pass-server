@@ -1,5 +1,4 @@
-var fs = require('fs')
-  , socketio = require('socket.io')
+var socketio = require('socket.io')
   , redis = require('redis').createClient();
 
 redis.subscribe('session_updated');
@@ -11,7 +10,7 @@ socketio.listen(server).on('connection', function (socket) {
     if( typeof message.session_id != "undefined" ) {
       socket.join("session_" + message.session_id);
     } else {
-      socket.send_message("error", "Subecibe message must include session_id.");
+      socket.send_message("error", "Subscribe message must include `session_id`.");
     }
   });
 
@@ -22,7 +21,7 @@ socketio.listen(server).on('connection', function (socket) {
     if( typeof message.session_id != "undefined" ) {
       // Send the message only to the clients in the session_id room
       socket.broadcast.to("session_" + message.session_id).emit(channel, message);
-      // channel is likey `session_updated`, `message` is the JSON for the event
+      // channel is an event, likey `session_updated`, `message` is the JSON for the event
     }
   });
 

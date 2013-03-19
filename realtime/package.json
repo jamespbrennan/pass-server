@@ -1,0 +1,9 @@
+{
+	"name": "pass-messenger",
+	"description": "Realtime component of pass-server.",
+	"version": "0.0.1",
+	"dependencies": {
+		"socket.io": "0.9",
+		"redis": "0.8.2"
+	}
+}
