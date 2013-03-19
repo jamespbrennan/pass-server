@@ -1,11 +1,16 @@
-require 'SocketIO'
+module Pass
+  class Messenger
 
-class Messenger
-	def send_message(event, data)
-		client = SocketIO.connect("http://localhost:8080") do
-			after_start do
-				emit(event, data)
-			end
-		end
-	end
+    def send_message(event, data)
+      logger = Logger.new(STDOUT);
+      logger.debug("send_message");
+      client = SocketIO.connect("http://127.0.0.1:8080") do
+        after_start do
+          client.emit(event, data)
+          client.disconnect
+        end
+      end
+    end
+
+  end
 end

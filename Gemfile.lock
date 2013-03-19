@@ -93,6 +93,10 @@ GEM
     rdoc (3.12.2)
       json (~> 1.4)
     ref (1.0.3)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
+    socketio-client (0.0.3)
+      rest-client
     sprockets (2.9.0)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -133,6 +137,7 @@ DEPENDENCIES
   rabl
   rails (= 4.0.0.beta1)
   rails-observers
+  socketio-client
   therubyracer
   turbolinks
   uglifier (>= 1.0.3)

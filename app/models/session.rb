@@ -47,7 +47,14 @@ class Session < ActiveRecord::Base
   # Send message to notify the browser that the session has been updated
   #
   def report_updated
-    Messenger.publish_message('session_updated', {id: self.id, is_authenticated: self.is_authenticated})
+    data = {id: self.id, is_authenticated: self.is_authenticated}
+    # Pass::Messenger.send_message('session_updated', {id: self.id, is_authenticated: self.is_authenticated})
+    client = SocketIO.connect("http://127.0.0.1:8080") do
+      after_start do
+        emit('session_updated', data)
+        disconnect
+      end
+    end
   end
 
 end

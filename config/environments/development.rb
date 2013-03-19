@@ -25,3 +25,7 @@ PassServer::Application.configure do
   # Debug mode disables concatenation and preprocessing of assets.
   config.assets.debug = true
 end
+
+if "irb" == $0
+  ActiveRecord::Base.logger = Logger.new(STDOUT)
+end
