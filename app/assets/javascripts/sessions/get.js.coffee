@@ -15,8 +15,7 @@ window.onload = () ->
 
   # When the session is updated, notify the parent page
   socket.on('session_updated', (message) ->
-    iframe = document.getElementsById('pass-login')
-    iframe.contentWindow.postMessage(message, 'http://localhost')
+    window.parent.postMessage(message, 'http://service.localhost') if window.parent
   )
 
   # Subscribe to a room based on the session_id

@@ -8,6 +8,7 @@
 #  allowed_ip_addresses :string(255)
 #  created_at           :datetime
 #  updated_at           :datetime
+#  url                  :string(255)
 #
 
 class Service < ActiveRecord::Base
@@ -15,16 +16,34 @@ class Service < ActiveRecord::Base
 
   before_create :generate_access_token
 
+  validates_presence_of :url
+  # validate :valid_url
+
   private
 
-  # Generate Access Token
+  # == Generate Access Token
   #
   # Create the secret key for services to authenticate to the API with.
   # Ensure that another record with the same access_token does not exist.
   #
+
   def generate_access_token
   	begin
   		self.access_token = SecureRandom.hex
   	end while self.class.exists?(access_token: access_token)
   end
+
+  # == Valid URL
+  #
+  # Ensure there is a valid URL
+  #
+
+  def valid_url
+    if(URI.parse(self.url).kind_of?(URI::HTTP))
+      errors.add(:url, 'The URL attribute must contain a valid URL.')
+    end
+  rescue URI::InvalidURIError
+    errors.add(:url, 'The URL attribute must contain a valid URL.')
+  end
+
 end

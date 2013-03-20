@@ -35,7 +35,8 @@ module V1
 
 			@session = Session.find(params[:id])
 
-			# render 'get.html.erb'
+			# Allow the iframe to be embedded in the services' domain
+			response.headers["X-Frame-Options"] = "ALLOW-FROM " + @session.service.url
 		end
 
 		# == Authenticate a device

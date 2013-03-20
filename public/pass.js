@@ -1,11 +1,4 @@
-window._pass = window._pass || [];
-
-function receiver(e) {
-  console.log(e);
-  if (e.origin == 'http://localhost') {
-    alert(e.data);
-  }
-}
+window._pass = window._pass || {};
 
 (function() {
 	var iframe
@@ -41,6 +34,18 @@ function receiver(e) {
 
 	target.appendChild(iframe);
 
-  window.addEventListener('message', receiver, false);
+  window.addEventListener('message', function(e) {
+      if (e.origin == 'http://localhost:3000') {
+        if(e.data.is_authenticated) {
+          // If no page is provided to redirect to, just refresh the current page
+          if( ! window._pass.redirect_to ) self.location.reload(true);
+          
+          window.location.assign(window._pass.redirect_to);
+        } else {
+          alert("I'm sorry, but something must have gone wrong or your session has expired. The page will reload and you can try again.");
+          self.location.reload(true);
+        }
+      }
+    }, false);
 
 })();
