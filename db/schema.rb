@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130319232010) do
+ActiveRecord::Schema.define(version: 20130320170848) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,7 +57,6 @@ ActiveRecord::Schema.define(version: 20130319232010) do
   end
 
   create_table "sessions", force: true do |t|
-    t.string   "ip_address"
     t.string   "user_agent"
     t.string   "token"
     t.datetime "created_at"
@@ -65,6 +64,8 @@ ActiveRecord::Schema.define(version: 20130319232010) do
     t.boolean  "is_authenticated"
     t.integer  "device_id"
     t.integer  "service_id"
+    t.inet     "remote_ip_address"
+    t.inet     "device_ip_address"
   end
 
   add_index "sessions", ["device_id"], name: "index_sessions_on_device_id"
