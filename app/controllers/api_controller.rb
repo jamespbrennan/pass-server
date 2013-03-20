@@ -7,16 +7,33 @@ class ApiController < ActionController::Base
 
 	private
 
+	# == Record Not Found
 	#
 	# Show a 404 error on an ActiveRecord::RecordNotFound exception.
 	#
 	
-	def record_not_found
+	def record_not_found(e)
 		render :json => {
 			:errors => {
-				:message => "Sorry, couldn't find that record.",
+				:message => e.to_s,
 				:code => 404
 			}
 		}.to_json, :status => :not_found
 	end
+
+	# == Error Check
+    #
+    # Check for active record errors. Set status header to 500 and display errors as JSON 
+    # if any are found.
+    #
+
+    def error_check(record)
+      render :json => {
+        :errors => {
+          :message => record.errors.full_messages,
+          :code => 500
+        }
+      }.to_json, :status => :error if ! record.valid?
+    end
+
 end

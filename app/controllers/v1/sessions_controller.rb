@@ -1,141 +1,135 @@
 module V1
-	class SessionsController < ApiController
-		respond_to :json
+  class SessionsController < ApiController
+    respond_to :json
 
-		# == Create a session.
-		#
-		# Required parameters:
-		# => service_id
-		#
-		# Returns:
-		# => id
-		# => service_id
-		# => token
-		# => created_at
-		#
+    # == Create a session.
+    #
+    # Required parameters:
+    # => service_id
+    #
+    # Returns:
+    # => id
+    # => service_id
+    # => token
+    # => created_at
+    #
 
-		def create
-			params.required(:service_id)
+    def create
+      params.required(:service_id)
 
-			@session = Session.create(:service_id => params[:service_id])
+      @session = Session.create(:service_id => params[:service_id])
 
-			error_check
-		end
+      error_check
+    end
 
-		# == Get a session
-		#
-		# Required parameters:
-		# => id
-		#
-		# Returns login QR code HTML
-		#
+    # == Get a session
+    #
+    # Required parameters:
+    # => id
+    #
+    # Returns login QR code HTML
+    #
 
-		def get
-			params.required(:id)
+    def get
+      params.required(:id)
 
-			@session = Session.find(params[:id])
+      @session = Session.find(params[:id])
 
-			# Allow the iframe to be embedded in the services' domain
-			response.headers["X-Frame-Options"] = "ALLOW-FROM " + @session.service.url
-		end
+      # Update the session with the browser's IP address
+      @session.remote_ip_address = request.remote_ip
+      @session.save
 
-		# == Authenticate a device
-		#
-		# Requred parameters:
-		# => device_id
-		# => session_id
-		# => token
-		#
+      error_check
 
-		def authenticate
-			params.required(:device_id)
-			params.required(:session_id)
-			params.required(:token)
+      # Allow the iframe to be embedded in the services' domain
+      response.headers["X-Frame-Options"] = "ALLOW-FROM " + @session.service.url
+    end
 
-			session = Session.find(params[:session_id])
+    # == Authenticate a device
+    #
+    # Requred parameters:
+    # => device_id
+    # => session_id
+    # => token
+    #
 
-			if session.nil?
-				return record_not_found
-			end
+    def authenticate
+      params.required(:device_id)
+      params.required(:session_id)
+      params.required(:token)
 
-			# Make sure the device belongs to the session
-			if session.device_id != params[:device_id]
-				return render :json => {
-					:errors => {
-						:message => "Device does not match the session.",
-						:code => 500
-					}
-				}.to_json, :status => :error
-			end
+      session = Session.find(params[:session_id])
 
-			device = Device.find(params[:device_id])
+      if session.nil?
+        return record_not_found
+      end
 
-			if device.nil?
-				return render :json => {
-					:errors => {
-						:message => "Unable to find the device specified.",
-						:code => 500
-					}
-				}.to_json, :status => :error
-			end
+      # Grab the device that is trying to authenticate
+      device = Device.find(params[:device_id])
 
-			begin
-				# Create an RSA object from the device's public key
-				public_key = OpenSSL::PKey::RSA.new device.public_key
-			rescue OpenSSL::PKey::RSAError
-				render :json => {
-				  :errors => {
-					:message => "A public key is not available for the device.",
-					:code => 500
-				  }
-				}.to_json, :status => :error
-				return
-			end
-			
-			# Decrypt the provided token with the device's public key
-			plaintext_token = public_key.public_decrypt Base64::decode64(params[:token])
+      render :text => request.remote_ip.inspect
 
-			if plaintext_token != session.token
-				# Unsuccessful authentication
-				render :json => {
-				  :errors => {
-					:message => "Unsuccessful authentication.",
-					:code => 401
-				  }
-				}.to_json, :status => 401
-				return
-			end
-		end
+      return
 
-		private
+      # Add the device's IP address to the session, regardless if the authentication is sucessful or not
+      session.device_ip_address = request.remote_ip
+      session.device_id = device
 
-		# == Error Check
-		#
-		# Check for active record errors. Set status header to 500 and display errors as JSON 
-		# if any are found.
-		#
+      if session.valid?
+        session.save
+      else
+        error_check(session)
+      end
 
-		def error_check
-			render :json => {
-				:errors => {
-					:message => @session.errors.full_messages,
-					:code => 500
-				}
-			}.to_json, :status => :error if ! @session.valid?
-		end
+      
+      if device.nil?
+        return render :json => {
+          :errors => {
+            :message => "Unable to find the device specified.",
+            :code => 500
+          }
+        }.to_json, :status => :error
+      end
 
-		# == Record Not Found
-		#
-		# Show a 404 error on an ActiveRecord::RecordNotFound exception.
-		#
+      begin
+        # Create an RSA object from the device's public key
+        public_key = OpenSSL::PKey::RSA.new device.public_key
+      rescue OpenSSL::PKey::RSAError
+        render :json => {
+          :errors => {
+          :message => "A public key is not available for the device.",
+          :code => 500
+          }
+        }.to_json, :status => :error
+        return
+      end
+      
+      # Decrypt the provided token with the device's public key
+      plaintext_token = public_key.public_decrypt Base64::decode64(params[:token])
 
-		def record_not_found
-			render :json => {
-				:errors => {
-					:message => "Sorry, couldn't find that session.",
-					:code => 404
-				}
-			}.to_json, :status => :not_found
-		end
-	end
+      if plaintext_token != session.token
+        # Unsuccessful authentication
+        render :json => {
+          :errors => {
+          :message => "Unsuccessful authentication.",
+          :code => 401
+          }
+        }.to_json, :status => 401
+        return
+      end
+    end
+
+    private
+
+    # == Error Check
+    #
+    # Check for active record errors. Set status header to 500 and display errors as JSON 
+    # if any are found.
+    #
+
+    def error_check(record = @session)
+      super record
+    end
+
+  end
 end
