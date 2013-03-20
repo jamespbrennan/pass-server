@@ -3,23 +3,33 @@ require 'api_constraints'
 PassServer::Application.routes.draw do
 
   scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
-    post 'sessions/create' => 'sessions#create'
-    get 'sessions/get' => 'sessions#get'
-    post 'sessions/authenticate' => 'sessions#authenticate'
+    constraints :subdomain => 'api' do
 
-    post 'devices/create' => 'devices#create'
-    post 'devices/register' => 'devices#register'
+      # Give them a blank page as the default route so it doesn't look like the API is down
+      root to: proc { [200, {}, ['']] }
+
+      post 'sessions/create' => 'sessions#create'
+      get 'sessions/get' => 'sessions#get'
+      post 'sessions/authenticate' => 'sessions#authenticate'
+
+      post 'devices/create' => 'devices#create'
+      post 'devices/register' => 'devices#register'
+
+      post 'users/create' => 'users#create'
+    end
   end
 
-  get 'signup', to: 'users#new', as: 'signup'
-  get 'login', to: 'sessions#new', as: 'login'
-  get 'logout', to: 'sessions#destroy', as: 'logout'
+  constraints :subdomain => '' do
+    root to: 'devices#index'
 
-  root to: 'devices#index'
+    get 'signup', to: 'users#new', as: 'signup'
+    get 'login', to: 'sessions#new', as: 'login'
+    get 'logout', to: 'sessions#destroy', as: 'logout'
 
-  resources :users
-  resources :sessions
-  resources :devices
+    resources :users
+    resources :sessions
+    resources :devices
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
