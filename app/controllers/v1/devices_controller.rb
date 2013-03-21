@@ -29,12 +29,10 @@ module V1
       user = User.find_by_email(params[:email])
 
       if ! user && user.authenticate(params[:password])
-        return render :json => {
-          :errors => {
-            :message => "Invalid email and password combination.",
-            :code => 401
-          }
-        }.to_json, :status => :unauthorized
+        # Don't send the plaintext password back to the remote client
+        params[:password].delete
+
+        return error('Invalid email and password combination.', 'invalid_request_error', 401);
       end
 
       @device = Device.new
@@ -58,7 +56,7 @@ module V1
       
       @device.save
 
-      error_check
+      invalid_request_error_check
     end
 
     # == Register a device to a service.
@@ -82,25 +80,11 @@ module V1
       # Make sure the device exists
       device = Device.find(:device_id)
 
-      if ! device.nil?
-        return render :json => {
-          :errors => {
-            :message => "Unable to find device for given device id.",
-            :code => 404
-          }
-        }.to_json, :status => :not_found
-      end
-
       # Make sure the given signature is valid
       message = attributes.map{|k,v| "#{v}"}.join(":")
 
       if ! verify_signature(device.auth_token, message, params[:signature])
-        return render :json => {
-          :errors => {
-            :message => "Invalid signature.",
-            :code => 401
-          }
-        }.to_json, :status => :unauthorized
+        return error("Invalid signature: '#{params[:signature]}'.", 'invalid_request_error', 401)
       end
 
       # Check the public key
@@ -108,27 +92,18 @@ module V1
         # Create an RSA object from the device's public key to test if it is valid
         public_key = OpenSSL::PKey::RSA.new params[:public_key]
       rescue OpenSSL::PKey::RSAError
-        return render :json => {
-          :errors => {
-          :message => "The public key you provided is not a valid public key.",
-          :code => 500
-          }
-        }.to_json, :status => :error
+        return error('The public key you provided is not a valid public key.')
       end
 
       # Make sure the key is actually a pulic key, and not private
       if ! public_key.public?
-        return render :json => {
-          :errors => {
-          :message => "The public key you provided is not a valid public key.",
-          :code => 500
-          }
-        }.to_json, :status => :error
+        return error('The public key you provided is not a valid public key.')
       end
-
+      
       device_account = DeviceAccount.create(attributes)
 
-      error_check(device_account)
+      # Using remote client provided data, so check it for errors
+      invalid_request_error_check(device_account)
     end
 
     private
@@ -139,7 +114,11 @@ module V1
     # if any are found.
     #
 
-    def error_check(record = @device)
+    def api_error_check(record = @device)
+      super record
+    end
+
+    def invalid_request_error_check(record = @device)
       super record
     end
 

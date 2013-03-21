@@ -20,6 +20,8 @@ module V1
 			params.required(:password)
 
 			@user = User.create(:email => params[:email], :password => params[:password])
+
+			invalid_request_error_check
 		end
 
 		private
@@ -30,7 +32,11 @@ module V1
 		# if any are found.
 		#
 
-		def error_check(record = @user)
+		def api_error_check(record = @user)
+			super record
+		end
+
+		def invalid_request_error_check(record = @user)
 			super record
 		end
 

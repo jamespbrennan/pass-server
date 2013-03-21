@@ -60,48 +60,23 @@ module V1
 
       session = Session.find(params[:session_id])
 
-      if session.nil?
-        return record_not_found
-      end
-
       # Grab the device that is trying to authenticate
       device = Device.find(params[:device_id])
-
-      render :text => request.remote_ip.inspect
-
-      return
 
       # Add the device's IP address to the session, regardless if the authentication is sucessful or not
       session.device_ip_address = request.remote_ip
       session.device_id = device
 
-      if session.valid?
-        session.save
-      else
-        error_check(session)
-      end
+      # Make sure we didn't mess up
+      api_error_check(session) && return
 
-      
-      if device.nil?
-        return render :json => {
-          :errors => {
-            :message => "Unable to find the device specified.",
-            :code => 500
-          }
-        }.to_json, :status => :error
-      end
+      session.save
 
       begin
         # Create an RSA object from the device's public key
         public_key = OpenSSL::PKey::RSA.new device.public_key
       rescue OpenSSL::PKey::RSAError
-        render :json => {
-          :errors => {
-          :message => "A public key is not available for the device.",
-          :code => 500
-          }
-        }.to_json, :status => :error
-        return
+        return error('A public key is not available for the device.', 'api_error', 500)
       end
       
       # Decrypt the provided token with the device's public key
@@ -109,13 +84,7 @@ module V1
 
       if plaintext_token != session.token
         # Unsuccessful authentication
-        render :json => {
-          :errors => {
-          :message => "Unsuccessful authentication.",
-          :code => 401
-          }
-        }.to_json, :status => 401
-        return
+        return error('Unsuccessful authentication.', 'invalid_request_error', 401)
       end
     end
 
@@ -127,7 +96,11 @@ module V1
     # if any are found.
     #
 
-    def error_check(record = @session)
+    def api_error_check(record = @session)
+      super record
+    end
+
+    def invalid_request_error_check(record = @session)
       super record
     end
 
