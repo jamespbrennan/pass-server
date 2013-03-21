@@ -15,24 +15,27 @@ PassServer::Application.routes.draw do
   end
 
   constraints :subdomain => 'api' do
-    scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
-    
-      # Give them a blank page as the default route so it doesn't look like the API is down
-      root to: proc { [200, {}, ['']] }
+    scope module: :api do
 
-      post 'sessions' => 'sessions#create'
-      get 'sessions' => 'sessions#get'
-      post 'sessions/authenticate' => 'sessions#authenticate'
+      scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
+        # Give them a blank page as the default route so it doesn't look like the API is down
+        root to: proc { [200, {}, ['']] }
 
-      post 'devices' => 'devices#create'
-      post 'devices/register' => 'devices#register'
+        post 'sessions' => 'sessions#create'
+        get 'sessions' => 'sessions#get'
+        post 'sessions/authenticate' => 'sessions#authenticate'
 
-      post 'users' => 'users#create'
+        post 'devices' => 'devices#create'
+        post 'devices/register' => 'devices#register'
 
-      get '*a' => 'errors#routing'
-      post '*a' => 'errors#routing'
-      delete '*a' => 'errors#routing'
-      patch '*a' => 'errors#routing'
+        post 'users' => 'users#create'
+
+        get '*a' => 'errors#routing'
+        post '*a' => 'errors#routing'
+        delete '*a' => 'errors#routing'
+        patch '*a' => 'errors#routing'
+      end
+
     end
   end
 end
