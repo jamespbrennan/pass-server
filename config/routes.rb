@@ -33,6 +33,7 @@ PassServer::Application.routes.draw do
       post '*a' => 'errors#routing'
       delete '*a' => 'errors#routing'
       patch '*a' => 'errors#routing'
+      put '*a' => 'errors#routing'
     end
   end
 end

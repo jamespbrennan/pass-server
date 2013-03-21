@@ -1,12 +1,7 @@
 module V1
   class ErrorsController < ApiController
     def routing
-      render :json => {
-        :errors => {
-          :message => 'Resource not found.',
-          :code => 404
-        }
-      }.to_json, :status => :not_found
+      error('Resource not found.', 'invalid_request_error', 404)
     end
   end
 end
