@@ -32,7 +32,7 @@ class ApiController < ActionController::Base
   # if any are found.
   #
 
-  def api_error(record, status_code = 500)
+  def api_error_check(record, status_code = 500)
     message = 'Sorry something went wrong, we\'re lookgin into it. Please retry you\'re request shortly'
     error(message, 'api_error', status_code, false) if ! record.valid?
   end
@@ -43,7 +43,7 @@ class ApiController < ActionController::Base
   # if any are found. Include any params provided by the remote client.
   #
 
-  def invalid_request_error(record, status_code = 402)
+  def invalid_request_error_check(record, status_code = 402)
     error(record.errors.full_messages, 'invalid_request_error', status_code) if ! record.valid?
   end
 

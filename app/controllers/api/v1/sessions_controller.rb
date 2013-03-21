@@ -11,7 +11,6 @@ module Api
       # Returns:
       # => id
       # => service_id
-      # => token
       # => created_at
       #
 
@@ -20,7 +19,7 @@ module Api
 
         @session = Session.create(:service_id => params[:service_id])
 
-        error_check
+        invalid_request_error_check
       end
 
       # == Get a session
@@ -40,7 +39,7 @@ module Api
         @session.remote_ip_address = request.remote_ip
         @session.save
 
-        error_check
+        api_error_check
 
         # Allow the iframe to be embedded in the services' domain
         response.headers["X-Frame-Options"] = "ALLOW-FROM " + @session.service.url
