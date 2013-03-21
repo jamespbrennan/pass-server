@@ -30,7 +30,7 @@ module Api
 
         if ! user && user.authenticate(params[:password])
           # Don't send the plaintext password back to the remote client
-          params[:password].delete
+          params.delete :password
 
           return error('Invalid email and password combination.', 'invalid_request_error', 401);
         end

@@ -4,6 +4,7 @@ class ApiController < ActionController::Base
 	# protect_from_forgery with: :null_session
 
 	rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found
+  rescue_from ActionController::ParameterMissing, :with => :parameter_missing
 
 	private
 
@@ -13,14 +14,17 @@ class ApiController < ActionController::Base
 	#
 	
 	def record_not_found(e)
-		render :json => {
-			:errors => {
-        :type => 'invalid_request_error',
-				:message => e.to_s,
-				:code => 404
-			}
-		}.to_json, :status => 404
+    error(e.to_s, 'invalid_request_error', 404)
 	end
+
+  # == Parameter Missing
+  #
+  # Show a 402 error on an ActionController::ParameterMissing exception.
+  #
+  
+  def parameter_missing(e)
+    error(e.to_s, 'invalid_request_error', 402)
+  end
 
   # == API Error Check
   #
@@ -58,7 +62,7 @@ class ApiController < ActionController::Base
     }
 
     # If there were any params with the request, send them back to the user to aid in debugging
-    response[:error][:params] = params if include_params && params
+    response[:error][:params] = request.query_parameters if include_params && request.query_parameters.length > 0
 
     render :json => response.to_json, :status => status_code
 
