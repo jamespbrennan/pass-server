@@ -62,6 +62,8 @@ module Api
 
         # Grab the device that is trying to authenticate
         device = Device.find(params[:device_id])
+        # Get the account for that device/service
+        device_account = device.device_accounts(session.service_id).first
 
         # Add the device's IP address to the session, regardless if the authentication is sucessful or not
         session.device_ip_address = request.remote_ip
@@ -74,13 +76,18 @@ module Api
 
         begin
           # Create an RSA object from the device's public key
-          public_key = OpenSSL::PKey::RSA.new device.public_key
+          public_key = OpenSSL::PKey::RSA.new device_account.public_key
         rescue OpenSSL::PKey::RSAError
           return error('A public key is not available for the device.', 'api_error', 500)
         end
         
-        # Decrypt the provided token with the device's public key
-        plaintext_token = public_key.public_decrypt Base64::decode64(params[:token])
+        begin
+          # Decrypt the provided token with the device's public key
+          plaintext_token = public_key.public_decrypt Base64::decode64(params[:token])
+        rescue
+          # Unsuccessful authentication
+          return error('Unsuccessful authentication.', 'invalid_request_error', 401)
+        end
 
         if plaintext_token != session.token
           # Unsuccessful authentication

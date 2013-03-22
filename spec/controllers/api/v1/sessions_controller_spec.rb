@@ -8,9 +8,9 @@ describe Api::V1::SessionsController do
     @session = FactoryGirl.create(:session)
     @device = FactoryGirl.create(:device)
 
-    key_pair = OpenSSL::PKey::RSA.new 2048
+    @key_pair = OpenSSL::PKey::RSA.new 2048
 
-    @device_account = FactoryGirl.create(:device_account, device_id: @device.id, service_id: @service.id, public_key: key_pair.public_key.to_pem)    
+    @device_account = FactoryGirl.create(:device_account, device_id: @device.id, service_id: @service.id, public_key: @key_pair.public_key.to_pem)    
   end
   
   describe '#create' do
@@ -22,7 +22,7 @@ describe Api::V1::SessionsController do
       post :create, request_payload
     end
 
-    it_behaves_like 'a sucessful JSON response' do
+    it_behaves_like 'a successful JSON response' do
     end
 
     it 'should include `"id":`' do
@@ -80,13 +80,23 @@ describe Api::V1::SessionsController do
 
   describe '#authenticate' do
 
-    it 'should only allow `device_id`, `session_id`, and `token` parameters'
-      @controller.user_params.keys.should eq(['device_id', 'session_id', 'token'])
-    end
+    # it 'should only allow `device_id`, `session_id`, and `token` parameters' do
+    #   @controller.query_parameters.keys.should eq(['device_id', 'session_id', 'token'])
+    # end
 
     context 'succesful authentication' do
 
-      it_behaves_like 'a sucessful JSON response' do
+      before do
+        request_payload = {
+          session_id: @session.id,
+          device_id: @device.id,
+          token: Base64::encode64(@key_pair.private_encrypt(@session.token))
+        }
+
+        post :authenticate, request_payload
+      end
+
+      it_behaves_like 'a successful JSON response' do
       end
 
       it 'should include `Successful authentication`' do
@@ -95,7 +105,17 @@ describe Api::V1::SessionsController do
 
     end
 
-    context 'unsucessful authentication' do
+    context 'unsuccessful authentication' do
+
+      before do
+        request_payload = {
+          session_id: @session.id,
+          device_id: @device.id,
+          token: Base64::encode64('foo')
+        }
+
+        post :authenticate, request_payload
+      end
 
       it 'should retrieve a content-type of json' do
         response.header['Content-Type'].should include 'application/json'
@@ -106,26 +126,18 @@ describe Api::V1::SessionsController do
       end
 
       it 'should not include `Successful authentication`' do
-        response.body.should.not include 'Successful authentication.'
+        response.body.should_not include 'Successful authentication.'
       end
 
       it 'should include `Unsuccessful authentication`' do
-        response.body.should.not include 'Unsuccessful authentication.'
+        response.body.should include 'Unsuccessful authentication.'
       end
 
     end
 
     context 'missing parameters' do
-    end
-
-
     
-
-    it 'should include `successful authentication` for valid token' do
-
     end
-
-    # it 'should include `unsucessful authentication'
 
   end
   
