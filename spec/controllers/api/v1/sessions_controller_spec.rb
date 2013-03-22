@@ -22,66 +22,88 @@ describe Api::V1::SessionsController do
   end
   
   describe '#create' do
-    before do
-      request_payload = {
-        service_id: @service.id,
-      }
 
-      post :create, request_payload
+    context 'valid parameters' do
+      before do
+        request_payload = {
+          service_id: @service.id,
+        }
+
+        post :create, request_payload
+      end
+
+      it_behaves_like 'a successful JSON response' do
+      end
+
+      it 'should include `"id":`' do
+        response.body.should include('"id":')
+      end
+
+      it 'should include `"service_id":`' do
+        response.body.should include "\"service_id\":#{@service.id.to_s}"
+      end
+
+      it 'should not include `"token":`' do
+        response.body.should_not include 'token":'
+      end
+
+      it 'should include `"created_at":`' do
+        response.body.should include '"created_at":'
+      end
     end
 
-    it_behaves_like 'a successful JSON response' do
-    end
+    context 'missing parameters' do
+      it 'should require `service_id` parameter' do
+        post :create
 
-    it 'should include `"id":`' do
-      response.body.should include('"id":')
-    end
-
-    it 'should include `"service_id":`' do
-      response.body.should include "\"service_id\":#{@service.id.to_s}"
-    end
-
-    it 'should not include `"token":`' do
-      response.body.should_not include 'token":'
-    end
-
-    it 'should include `"created_at":`' do
-      response.body.should include '"created_at":'
+        response.body.should include '{"error":{"type":"invalid_request_error","message":"param not found: service_id","code":402}}'
+      end
     end
 
   end
 
   describe '#get' do
-    before do
-      request_payload = {
-        id: @session.id,
-      }
 
-      get :get, request_payload
+    context 'valid parameters' do
+      before do
+        request_payload = {
+          id: @session.id,
+        }
+
+        get :get, request_payload
+      end
+
+      it 'should retrieve a content-type of html' do
+        response.header['Content-Type'].should include 'text/html'
+      end
+
+      it 'should retrieve a X-Frame-Option matching the service url' do
+        response.header['X-Frame-Options'].should == "ALLOW-FROM #{@session.service.url}"
+      end
+
+      it 'should retrieve status code of 200' do
+        response.response_code.should == 200
+      end
+
+      it 'should include `data-session-id`' do
+        response.body.should include "data-session-id=\"#{@session.id}\""
+      end
+
+      it 'should include `data-service-id`' do
+        response.body.should include "data-service-id=\"#{@session.service.id}\""
+      end
+
+      it 'should not include `data-token-id`' do
+        response.body.should include "data-token=\"#{@session.token}\""
+      end
     end
 
-    it 'should retrieve a content-type of html' do
-      response.header['Content-Type'].should include 'text/html'
-    end
+    context 'missing parameters' do
+      it 'should require `id` parameter' do
+        get :get
 
-    it 'should retrieve a X-Frame-Option matching the service url' do
-      response.header['X-Frame-Options'].should == "ALLOW-FROM #{@session.service.url}"
-    end
-
-    it 'should retrieve status code of 200' do
-      response.response_code.should == 200
-    end
-
-    it 'should include `data-session-id`' do
-      response.body.should include "data-session-id=\"#{@session.id}\""
-    end
-
-    it 'should include `data-service-id`' do
-      response.body.should include "data-service-id=\"#{@session.service.id}\""
-    end
-
-    it 'should not include `data-token-id`' do
-      response.body.should include "data-token=\"#{@session.token}\""
+        response.body.should include '{"error":{"type":"invalid_request_error","message":"param not found: id","code":402}}'
+      end
     end
 
   end
