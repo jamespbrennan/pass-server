@@ -14,8 +14,9 @@
 class Device < ActiveRecord::Base
   belongs_to :device_type
   belongs_to :user
-  has_many :session
-  has_many :device_account
+  has_many :sessions
+  has_many :device_accounts
+  has_many :services, through: :device_accounts
 
   validates :user_id, :presence => true
 

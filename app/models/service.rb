@@ -12,7 +12,9 @@
 #
 
 class Service < ActiveRecord::Base
-  has_many :session
+  has_many :sessions
+  has_many :device_accounts
+  has_many :devices, through: :device_accounts
 
   before_create :generate_access_token
 

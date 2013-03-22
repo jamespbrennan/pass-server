@@ -6,6 +6,11 @@ describe Api::V1::SessionsController do
   before do
     @service = FactoryGirl.create(:service)
     @session = FactoryGirl.create(:session)
+    @device = FactoryGirl.create(:device)
+
+    key_pair = OpenSSL::PKey::RSA.new 2048
+
+    @device_account = FactoryGirl.create(:device_account, device_id: @device.id, service_id: @service.id, public_key: key_pair.public_key.to_pem)    
   end
   
   describe '#create' do
@@ -17,12 +22,7 @@ describe Api::V1::SessionsController do
       post :create, request_payload
     end
 
-    it 'should retrieve a content-type of json' do
-      response.header['Content-Type'].should include 'application/json'
-    end
-
-    it 'should retrieve status code of 200' do
-      response.response_code.should == 200
+    it_behaves_like 'a sucessful JSON response' do
     end
 
     it 'should include `"id":`' do
@@ -75,6 +75,57 @@ describe Api::V1::SessionsController do
     it 'should not include `data-token-id`' do
       response.body.should include "data-token=\"#{@session.token}\""
     end
+
+  end
+
+  describe '#authenticate' do
+
+    it 'should only allow `device_id`, `session_id`, and `token` parameters'
+      @controller.user_params.keys.should eq(['device_id', 'session_id', 'token'])
+    end
+
+    context 'succesful authentication' do
+
+      it_behaves_like 'a sucessful JSON response' do
+      end
+
+      it 'should include `Successful authentication`' do
+        response.body.should include 'Successful authentication.'
+      end
+
+    end
+
+    context 'unsucessful authentication' do
+
+      it 'should retrieve a content-type of json' do
+        response.header['Content-Type'].should include 'application/json'
+      end
+
+      it 'should retrieve status code of 401' do
+        response.response_code.should == 401
+      end
+
+      it 'should not include `Successful authentication`' do
+        response.body.should.not include 'Successful authentication.'
+      end
+
+      it 'should include `Unsuccessful authentication`' do
+        response.body.should.not include 'Unsuccessful authentication.'
+      end
+
+    end
+
+    context 'missing parameters' do
+    end
+
+
+    
+
+    it 'should include `successful authentication` for valid token' do
+
+    end
+
+    # it 'should include `unsucessful authentication'
 
   end
   

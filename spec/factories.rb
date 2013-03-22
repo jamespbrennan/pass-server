@@ -12,5 +12,11 @@ FactoryGirl.define do
   factory :session do |f|
     service
   end
+
+  factory :device do |f|
+    user
+  end
   
+  factory :device_account do |f|
+  end
 end

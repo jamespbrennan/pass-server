@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+
 describe Api::V1::ErrorsController do
   render_views
   
@@ -8,12 +9,8 @@ describe Api::V1::ErrorsController do
       get :routing
     end
 
-    it "should retrieve a content-type of json" do
+    it 'should retrieve a content-type of json' do
       response.header['Content-Type'].should include 'application/json'
-    end
-
-    it "should retrieve status code of 404" do
-      response.response_code.should == 404
     end
 
     it 'should include `"type":"invalid_request_error"`' do
