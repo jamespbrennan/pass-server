@@ -14,6 +14,7 @@ describe Api::V1::SessionsController do
   end
 
   after :all do
+    # before :all doesn't rollback changes so anything created in there must be destroyed manually.
     @service.destroy
     @session.destroy
     @device.user.destroy
