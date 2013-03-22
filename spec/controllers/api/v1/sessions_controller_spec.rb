@@ -136,7 +136,38 @@ describe Api::V1::SessionsController do
     end
 
     context 'missing parameters' do
-    
+      it 'should require `session_id` parameter' do
+        request_payload = {
+          device_id: @device.id,
+          token: Base64::encode64('foo')
+        }
+
+        post :authenticate, request_payload
+
+        response.body.should include '{"error":{"type":"invalid_request_error","message":"param not found: session_id","code":402}}'
+      end
+
+      it 'should require `session_id` parameter' do
+        request_payload = {
+          session_id: @session.id,
+          token: Base64::encode64('foo')
+        }
+
+        post :authenticate, request_payload
+
+        response.body.should include '{"error":{"type":"invalid_request_error","message":"param not found: device_id","code":402}}'
+      end
+
+      it 'should require `session_id` parameter' do
+        request_payload = {
+          session_id: @session.id,
+          device_id: @device.id,
+        }
+
+        post :authenticate, request_payload
+
+        response.body.should include '{"error":{"type":"invalid_request_error","message":"param not found: token","code":402}}'
+      end
     end
 
   end

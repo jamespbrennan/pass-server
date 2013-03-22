@@ -23,6 +23,8 @@ class ApiController < ActionController::Base
   #
   
   def parameter_missing(e)
+    #TODO Display an error message with all the required parameters, not just the one that triggered with exception.
+    # This is not currently possible with strong_parameters. Check in with https://github.com/rails/strong_parameters/pull/117
     error(e.to_s, 'invalid_request_error', 402)
   end
 
