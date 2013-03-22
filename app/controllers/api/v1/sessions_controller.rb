@@ -48,17 +48,17 @@ module Api
       # == Authenticate a device
       #
       # Requred parameters:
+      # => id
       # => device_id
-      # => session_id
       # => token
       #
 
       def authenticate
+        params.required(:id)
         params.required(:device_id)
-        params.required(:session_id)
         params.required(:token)
 
-        session = Session.find(params[:session_id])
+        session = Session.find(params[:id])
 
         # Grab the device that is trying to authenticate
         device = Device.find(params[:device_id])
@@ -67,7 +67,7 @@ module Api
 
         # Add the device's IP address to the session, regardless if the authentication is sucessful or not
         session.device_ip_address = request.remote_ip
-        session.device_id = device
+        session.device = device
 
         # Make sure we didn't mess up
         api_error_check(session) && return
