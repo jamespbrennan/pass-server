@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Api::V1::SessionsController do
   render_views
 
-  before do
+  before :all do
     @service = FactoryGirl.create(:service)
     @session = FactoryGirl.create(:session)
     @device = FactoryGirl.create(:device)
@@ -11,6 +11,13 @@ describe Api::V1::SessionsController do
     @key_pair = OpenSSL::PKey::RSA.new 2048
 
     @device_account = FactoryGirl.create(:device_account, device_id: @device.id, service_id: @service.id, public_key: @key_pair.public_key.to_pem)    
+  end
+
+  after :all do
+    @service.destroy
+    @session.destroy
+    @device.user.destroy
+    @device.destroy
   end
   
   describe '#create' do
