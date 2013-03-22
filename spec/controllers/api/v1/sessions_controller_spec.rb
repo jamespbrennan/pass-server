@@ -56,7 +56,7 @@ describe Api::V1::SessionsController do
       it 'should require `service_id` parameter' do
         post :create
 
-        response.body.should include '{"error":{"type":"invalid_request_error","message":"param not found: service_id","code":402}}'
+        response.body.should == '{"error":{"type":"invalid_request_error","message":"param not found: service_id","code":402}}'
       end
     end
 
@@ -102,7 +102,7 @@ describe Api::V1::SessionsController do
       it 'should require `id` parameter' do
         get :get
 
-        response.body.should include '{"error":{"type":"invalid_request_error","message":"param not found: id","code":402}}'
+        response.body.should == '{"error":{"type":"invalid_request_error","message":"param not found: id","code":402}}'
       end
     end
 
@@ -174,7 +174,7 @@ describe Api::V1::SessionsController do
 
         post :authenticate, request_payload
 
-        response.body.should include '{"error":{"type":"invalid_request_error","message":"param not found: id","code":402}}'
+        response.body.should == '{"error":{"type":"invalid_request_error","message":"param not found: id","code":402}}'
       end
 
       it 'should require `session_id` parameter' do
@@ -185,7 +185,7 @@ describe Api::V1::SessionsController do
 
         post :authenticate, request_payload
 
-        response.body.should include '{"error":{"type":"invalid_request_error","message":"param not found: device_id","code":402}}'
+        response.body.should == '{"error":{"type":"invalid_request_error","message":"param not found: device_id","code":402}}'
       end
 
       it 'should require `session_id` parameter' do
@@ -196,7 +196,7 @@ describe Api::V1::SessionsController do
 
         post :authenticate, request_payload
 
-        response.body.should include '{"error":{"type":"invalid_request_error","message":"param not found: token","code":402}}'
+        response.body.should == '{"error":{"type":"invalid_request_error","message":"param not found: token","code":402}}'
       end
     end
 

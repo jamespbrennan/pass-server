@@ -1,6 +1,5 @@
 require 'spec_helper'
 
-
 describe Api::V1::ErrorsController do
   render_views
   

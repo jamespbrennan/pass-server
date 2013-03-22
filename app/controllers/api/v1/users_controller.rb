@@ -12,7 +12,6 @@ module Api
 			# Returns:
 			# => id
 			# => email
-			# => device_id
 			# => created_at
 			#
 
