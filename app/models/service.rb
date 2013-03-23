@@ -19,7 +19,7 @@ class Service < ActiveRecord::Base
   before_create :generate_access_token
 
   validates_presence_of :url
-  # validate :valid_url
+  validate :valid_url
 
   private
 
@@ -37,14 +37,12 @@ class Service < ActiveRecord::Base
 
   # == Valid URL
   #
-  # Ensure there is a valid URL
+  # Ensure there is a valid HTTPS URL
   #
 
   def valid_url
-    if(URI.parse(self.url).kind_of?(URI::HTTP))
-      errors.add(:url, 'The URL attribute must contain a valid URL.')
-    end
-  rescue URI::InvalidURIError
+    throw Exception if ! URI.parse(self.url).kind_of?(URI::HTTPS)
+  rescue URI::InvalidURIError, Exception
     errors.add(:url, 'The URL attribute must contain a valid URL.')
   end
 

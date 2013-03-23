@@ -1,12 +1,14 @@
 FactoryGirl.define do
 
+  sequence(:email) {|n| "user#{n}@example.com" }
+
   factory :user do |f|
-    f.sequence(:email) { |n| "foo#{n}@example.com" }
-    f.password "secret"
+    f.email generate(:email)
+    f.password 'secret'
   end
 
   factory :service do |f|
-    f.sequence(:url) { |n| "test{n}.example.com" }
+    f.url 'https://example.com'
   end
 
   factory :session do |f|
@@ -18,5 +20,6 @@ FactoryGirl.define do
   end
   
   factory :device_account do |f|
+    f.public_key OpenSSL::PKey::RSA.generate(2048).public_key.to_pem
   end
 end

@@ -15,4 +15,17 @@ class DeviceAccount < ActiveRecord::Base
 	belongs_to :service
 
 	validates :device_id, :service_id, :public_key, :presence => true
+  validate :valid_public_key
+
+  private
+
+  def valid_public_key
+    if self.public_key_changed?
+      begin
+        throw Exception if OpenSSL::PKey::RSA.new(self.public_key).private?
+      rescue
+        errors.add(:public_key, 'The public_key attribute must contain a valid RSA public key.')
+      end
+    end
+  end
 end

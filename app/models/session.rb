@@ -33,15 +33,4 @@ class Session < ActiveRecord::Base
 		self.token = SecureRandom.hex
   end
 
-  # == Report Updated
-  #
-  # Send message to notify the browser that the session has been updated
-  #
-
-  def report_updated
-    data = {id: self.id, is_authenticated: self.is_authenticated}
-
-    $redis.publish 'session_updated', data.to_json
-  end
-
 end

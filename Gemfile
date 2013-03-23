@@ -37,10 +37,11 @@ gem 'redis'
 
 gem "rspec-rails", :group => [:test, :development]
 group :test do
-  gem "factory_girl_rails"
-  gem "capybara"
+  gem 'factory_girl_rails'
+  gem 'capybara'
   gem 'rb-fsevent', '~> 0.9'
-  gem "guard-rspec"
+  gem 'guard-rspec'
+  gem 'shoulda'
 end
 
 # Use unicorn as the app server
