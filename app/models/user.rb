@@ -16,6 +16,6 @@ class User < ActiveRecord::Base
 
   validates :email, :presence => true
 	validates_uniqueness_of :email
-	validates :email, :format => { :with => /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]+\z/, :on => :create }
+	validates :email, :format => { :with => /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]+\z/ }
 	
 end
