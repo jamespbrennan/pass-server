@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: services
+#
+#  id                   :integer          not null, primary key
+#  name                 :string(255)
+#  access_token         :string(255)
+#  allowed_ip_addresses :string(255)
+#  created_at           :datetime
+#  updated_at           :datetime
+#  url                  :string(255)
+#
+
 require 'spec_helper'
 
 describe Service do

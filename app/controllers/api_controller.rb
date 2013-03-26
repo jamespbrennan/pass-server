@@ -72,4 +72,17 @@ class ApiController < ActionController::Base
     true
   end
 
+  # == Authenticate
+  #
+  # Authenticate with a HTTP Authorization header.
+  #
+  # Eg. curl https://api.domain.com/sesisons -H 'Authorization: Token token="12345"'
+  #
+
+  def authenticate
+    authenticate_or_request_with_http_token do | token, options |
+      @api_key = ApiKey.find_by(token: token);
+    end
+  end
+
 end

@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: devices
+#
+#  id             :integer          not null, primary key
+#  created_at     :datetime
+#  updated_at     :datetime
+#  device_type_id :integer
+#  name           :string(255)
+#  token          :string(255)
+#  user_id        :integer
+#
+
 require 'spec_helper'
 
 describe Device do

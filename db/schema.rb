@@ -11,10 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130321230443) do
+ActiveRecord::Schema.define(version: 20130326231719) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "api_keys", force: true do |t|
+    t.string   "token"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "api_tokens", force: true do |t|
+    t.string   "token"
+    t.integer  "service_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "device_accounts", force: true do |t|
     t.text     "public_key"
@@ -41,7 +54,7 @@ ActiveRecord::Schema.define(version: 20130321230443) do
     t.datetime "updated_at"
     t.integer  "device_type_id"
     t.string   "name"
-    t.string   "access_token"
+    t.string   "token"
     t.integer  "user_id"
   end
 

@@ -7,8 +7,8 @@
 #  updated_at     :datetime
 #  device_type_id :integer
 #  name           :string(255)
+#  token          :string(255)
 #  user_id        :integer
-#  access_token   :string(255)
 #
 
 class Device < ActiveRecord::Base

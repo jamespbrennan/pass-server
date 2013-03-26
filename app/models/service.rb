@@ -15,6 +15,7 @@ class Service < ActiveRecord::Base
   has_many :sessions
   has_many :device_accounts
   has_many :devices, through: :device_accounts
+  has_many :api_tokens
 
   before_create :generate_access_token
 
@@ -41,7 +42,7 @@ class Service < ActiveRecord::Base
   #
 
   def valid_url
-    throw Exception if ! URI.parse(self.url).kind_of?(URI::HTTPS)
+    throw Exception if ! URI.parse(self.url).kind_of?(URI::HTTP)
   rescue URI::InvalidURIError, Exception
     errors.add(:url, 'The URL attribute must contain a valid URL.')
   end

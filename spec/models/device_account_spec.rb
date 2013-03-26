@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: device_accounts
+#
+#  id         :integer          not null, primary key
+#  public_key :text
+#  created_at :datetime
+#  updated_at :datetime
+#  device_id  :integer
+#  service_id :integer
+#
+
 require 'spec_helper'
 
 describe DeviceAccount do

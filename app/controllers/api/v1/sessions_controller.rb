@@ -1,6 +1,9 @@
 module Api
   module V1
     class SessionsController < ApiController
+
+      before_filter :authenticate
+
       respond_to :json
 
       # == Create a session.
@@ -15,9 +18,9 @@ module Api
       #
 
       def create
-        params.required(:service_id)
-
-        @session = Session.create(:service_id => params[:service_id])
+        # params.required(:api_key)
+        service = Service.find_by(access_token: response.headers["Authorization"])
+        @session = Session.create(service_id: service.id)
 
         invalid_request_error_check
       end
