@@ -12,8 +12,8 @@ describe Api::V1::SessionsController do
     context 'valid parameters' do
       before do
         @service = FactoryGirl.create(:service)
-
-        post :create, nil, { 'Authorization' => 'Token ' + @service.token }
+        request.env['HTTP_AUTHORIZATION'] = "Token #{@service.api_tokens.first.token}"
+        post :create
       end
 
       it_behaves_like 'a successful JSON response' do
@@ -33,14 +33,6 @@ describe Api::V1::SessionsController do
 
       it 'should include `"created_at":`' do
         response.body.should include '"created_at":'
-      end
-    end
-
-    context 'missing parameters' do
-      it 'should require `Authorization` header' do
-        post :create
-
-        response.body.should == '{"error":{"type":"invalid_request_error","message":"param not found: service_id","code":402}}'
       end
     end
 
@@ -113,6 +105,7 @@ describe Api::V1::SessionsController do
           token: Base64::encode64(@key_pair.private_encrypt(@session.token))
         }
 
+        request.env['HTTP_AUTHORIZATION'] = "Token #{@device.api_token.token}"
         post :authenticate, request_payload
       end
 
@@ -134,10 +127,10 @@ describe Api::V1::SessionsController do
 
         request_payload = {
           id: @session.id,
-          device_id: @device.id,
-          token: Base64::encode64('foo')
+          token: 'blah'
         }
 
+        request.env['HTTP_AUTHORIZATION'] = "Token #{@device.api_token.token}"
         post :authenticate, request_payload
       end
 
@@ -167,36 +160,10 @@ describe Api::V1::SessionsController do
       end
 
       it 'should require `id` parameter' do
-        request_payload = {
-          device_id: @device.id,
-          token: Base64::encode64('foo')
-        }
+        post :authenticate, nil, { authorization: "Token #{@device.api_token.token}" }
 
-        post :authenticate, request_payload
-
-        response.body.should == '{"error":{"type":"invalid_request_error","message":"param not found: id","code":402}}'
-      end
-
-      it 'should require `session_id` parameter' do
-        request_payload = {
-          id: @session.id,
-          token: Base64::encode64('foo')
-        }
-
-        post :authenticate, request_payload
-
-        response.body.should == '{"error":{"type":"invalid_request_error","message":"param not found: device_id","code":402}}'
-      end
-
-      it 'should require `session_id` parameter' do
-        request_payload = {
-          id: @session.id,
-          device_id: @device.id,
-        }
-
-        post :authenticate, request_payload
-
-        response.body.should == '{"error":{"type":"invalid_request_error","message":"param not found: token","code":402}}'
+        response.code == 401
+        # response.body.should == '{"error":{"type":"invalid_request_error","message":"param not found: id","code":402}}'
       end
     end
 

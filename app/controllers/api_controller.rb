@@ -49,6 +49,14 @@ class ApiController < ActionController::Base
     error(record.errors.full_messages, 'invalid_request_error', status_code) if ! record.valid?
   end
 
+  # == Unathenticated Error
+  #
+  #
+
+  def unauthenticated_error()
+    error('Unauthenticated. Please include your token in the Authorization header.', 'invalid_request_error', 401, false)
+  end
+
   # == Error
   #
   # Display a JSON error
@@ -79,9 +87,9 @@ class ApiController < ActionController::Base
   # Eg. curl https://api.domain.com/sesisons -H 'Authorization: Token token="12345"'
   #
 
-  def authenticate
-    authenticate_or_request_with_http_token do | token, options |
-      @token = ApiKey.find_by(token: token);
+  def restrict_access
+    authenticate_or_request_with_http_token do |token, options|
+      @api_consumer = ApiToken.find_by(token: token).api_consumer
     end
   end
 

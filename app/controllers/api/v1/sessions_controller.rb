@@ -2,14 +2,11 @@ module Api
   module V1
     class SessionsController < ApiController
 
-      before_filter :authenticate
+      before_action :restrict_access, except: :get
 
       respond_to :json
 
       # == Create a session.
-      #
-      # Required parameters:
-      # => service_id
       #
       # Returns:
       # => id
@@ -18,7 +15,9 @@ module Api
       #
 
       def create
-        service = Service.find_by(token: response.headers["Authorization"])
+        unathenticated_error if ! @api_consumer.is_a? Service
+        service = @api_consumer
+
         @session = Session.create(service_id: service.id)
 
         invalid_request_error_check
@@ -51,19 +50,17 @@ module Api
       #
       # Requred parameters:
       # => id
-      # => device_id
-      # => token
       #
 
       def authenticate
         params.required(:id)
-        params.required(:device_id)
-        params.required(:token)
+
+        # Grab the device that is trying to authenticate
+        unathenticated_error if ! @api_consumer.is_a? Device
+        device = @api_consumer
 
         session = Session.find(params[:id])
 
-        # Grab the device that is trying to authenticate
-        device = Device.find(params[:device_id])
         # Get the account for that device/service
         device_account = device.device_accounts(session.service_id).first
 

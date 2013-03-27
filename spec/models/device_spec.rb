@@ -31,13 +31,8 @@ describe Device do
       @device = FactoryGirl.create(:device)
     end
 
-    it "should generate an token" do
-      @device.token.should_not be_blank
-    end
-
-    it "should generate a unique token each time" do
-      new_device = FactoryGirl.create(:device)
-      @device.token.should_not == new_device.token
+    it "should generate an api_token" do
+      @device.api_token.should_not be_blank
     end
   end
   
