@@ -4,7 +4,6 @@
 #
 #  id                   :integer          not null, primary key
 #  name                 :string(255)
-#  access_token         :string(255)
 #  allowed_ip_addresses :string(255)
 #  created_at           :datetime
 #  updated_at           :datetime
@@ -15,26 +14,14 @@ class Service < ActiveRecord::Base
   has_many :sessions
   has_many :device_accounts
   has_many :devices, through: :device_accounts
-  has_many :api_tokens
-
-  before_create :generate_access_token
+  has_many :api_tokens, as: :api_consumer
 
   validates_presence_of :url
   validate :valid_url
 
+  after_create :create_api_token
+
   private
-
-  # == Generate Access Token
-  #
-  # Create the secret key for services to authenticate to the API with.
-  # Ensure that another record with the same access_token does not exist.
-  #
-
-  def generate_access_token
-  	begin
-  		self.access_token = SecureRandom.hex
-  	end while self.class.exists?(access_token: access_token)
-  end
 
   # == Valid URL
   #
@@ -45,6 +32,16 @@ class Service < ActiveRecord::Base
     throw Exception if ! URI.parse(self.url).kind_of?(URI::HTTP)
   rescue URI::InvalidURIError, Exception
     errors.add(:url, 'The URL attribute must contain a valid URL.')
+  end
+
+  # == Generate API Token
+  #
+  # Make sure the device has a api_token
+  #
+  def create_api_token
+    begin
+      ApiToken.create(api_consumer: self)
+    end
   end
 
 end

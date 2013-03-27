@@ -2,15 +2,16 @@
 #
 # Table name: api_tokens
 #
-#  id         :integer          not null, primary key
-#  token      :string(255)
-#  service_id :integer
-#  created_at :datetime
-#  updated_at :datetime
+#  id                :integer          not null, primary key
+#  token             :string(255)
+#  api_consumer_id   :integer
+#  api_consumer_type :string(255)
+#  created_at        :datetime
+#  updated_at        :datetime
 #
 
 class ApiToken < ActiveRecord::Base
-  has_many :services
+  belongs_to :api_consumer, polymorphic: true
 
   before_create :generate_token
 
@@ -18,11 +19,14 @@ class ApiToken < ActiveRecord::Base
 
   # == Generate Token
   #
-  # Create the token
+  # Create the secret key for the device to authenticate to the API with.
+  # Ensure that another record with the same token does not exist.
   #
 
   def generate_token
-    self.token = SecureRandom.hex
+    begin
+      self.token = SecureRandom.hex
+    end while self.class.exists?(token: token)
   end
 
 end

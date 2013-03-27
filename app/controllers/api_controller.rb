@@ -81,7 +81,7 @@ class ApiController < ActionController::Base
 
   def authenticate
     authenticate_or_request_with_http_token do | token, options |
-      @api_key = ApiKey.find_by(token: token);
+      @token = ApiKey.find_by(token: token);
     end
   end
 

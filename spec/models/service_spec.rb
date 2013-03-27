@@ -4,7 +4,6 @@
 #
 #  id                   :integer          not null, primary key
 #  name                 :string(255)
-#  access_token         :string(255)
 #  allowed_ip_addresses :string(255)
 #  created_at           :datetime
 #  updated_at           :datetime
@@ -33,15 +32,6 @@ describe Service do
       @service.valid?.should be_true
       @service.url = 'foo'
       @service.valid?.should_not be_true
-    end
-
-    it 'should generate access token' do
-      @service.access_token.should_not be_blank
-    end
-
-    it 'should generate a unique access token' do
-      new_service = FactoryGirl.create(:service)
-      @service.access_token.should_not == new_service.access_token
     end
   end
 

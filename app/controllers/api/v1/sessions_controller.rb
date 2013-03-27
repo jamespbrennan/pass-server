@@ -18,8 +18,7 @@ module Api
       #
 
       def create
-        # params.required(:api_key)
-        service = Service.find_by(access_token: response.headers["Authorization"])
+        service = Service.find_by(token: response.headers["Authorization"])
         @session = Session.create(service_id: service.id)
 
         invalid_request_error_check

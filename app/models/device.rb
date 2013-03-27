@@ -7,7 +7,6 @@
 #  updated_at     :datetime
 #  device_type_id :integer
 #  name           :string(255)
-#  token          :string(255)
 #  user_id        :integer
 #
 
@@ -17,21 +16,21 @@ class Device < ActiveRecord::Base
   has_many :sessions
   has_many :device_accounts
   has_many :services, through: :device_accounts
+  has_one :api_token, as: :api_consumer
 
-  validates :user_id, :presence => true
+  validates_presence_of :user_id
 
-  before_create :generate_access_token
+  after_create :create_api_token
 
   private
 
-  # Generate Access Token
+  # == Generate API Token
   #
-  # Create the secret key for the device to authenticate to the API with.
-  # Ensure that another record with the same access_token does not exist.
+  # Make sure the device has a api_token
   #
-  def generate_access_token
-  	begin
-  		self.access_token = SecureRandom.hex
-  	end while self.class.exists?(access_token: access_token)
+  def create_api_token
+    begin
+      ApiToken.create(api_consumer: self)
+    end
   end
 end

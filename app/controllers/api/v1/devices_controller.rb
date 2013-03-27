@@ -15,7 +15,7 @@ module Api
       # Returns:
       # => id
       # => name
-      # => access_token
+      # => token
       # => created_at
       #
 

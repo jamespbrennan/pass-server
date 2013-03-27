@@ -1,2 +1,2 @@
 object @device
-attributes :id, :name, :access_token, :created_at
+attributes :id, :name, :token, :created_at

@@ -11,20 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130326231719) do
+ActiveRecord::Schema.define(version: 20130327010831) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "api_keys", force: true do |t|
-    t.string   "token"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "api_tokens", force: true do |t|
     t.string   "token"
-    t.integer  "service_id"
+    t.integer  "api_consumer_id"
+    t.string   "api_consumer_type"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -54,7 +49,6 @@ ActiveRecord::Schema.define(version: 20130326231719) do
     t.datetime "updated_at"
     t.integer  "device_type_id"
     t.string   "name"
-    t.string   "token"
     t.integer  "user_id"
   end
 
@@ -62,7 +56,6 @@ ActiveRecord::Schema.define(version: 20130326231719) do
 
   create_table "services", force: true do |t|
     t.string   "name"
-    t.string   "access_token"
     t.string   "allowed_ip_addresses", array: true
     t.datetime "created_at"
     t.datetime "updated_at"

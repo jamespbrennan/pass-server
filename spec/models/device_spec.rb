@@ -7,7 +7,6 @@
 #  updated_at     :datetime
 #  device_type_id :integer
 #  name           :string(255)
-#  token          :string(255)
 #  user_id        :integer
 #
 
@@ -32,13 +31,13 @@ describe Device do
       @device = FactoryGirl.create(:device)
     end
 
-    it "should generate an access_token" do
-      @device.access_token.should_not be_blank
+    it "should generate an token" do
+      @device.token.should_not be_blank
     end
 
-    it "should generate a unique access_token each time" do
+    it "should generate a unique token each time" do
       new_device = FactoryGirl.create(:device)
-      @device.access_token.should_not == new_device.access_token
+      @device.token.should_not == new_device.token
     end
   end
   

@@ -4,32 +4,16 @@ describe Api::V1::SessionsController do
   render_views
 
   before :all do
-    @service = FactoryGirl.create(:service)
-    @session = FactoryGirl.create(:session)
-    @device = FactoryGirl.create(:device)
-
     @key_pair = OpenSSL::PKey::RSA.new 2048
-
-    @device_account = FactoryGirl.create(:device_account, device_id: @device.id, service_id: @service.id, public_key: @key_pair.public_key.to_pem)    
-  end
-
-  after :all do
-    # before :all doesn't rollback changes so anything created in there must be destroyed manually.
-    @service.destroy
-    @session.destroy
-    @device.user.destroy
-    @device.destroy
   end
   
   describe '#create' do
 
     context 'valid parameters' do
       before do
-        request_payload = {
-          service_id: @service.id,
-        }
+        @service = FactoryGirl.create(:service)
 
-        post :create, request_payload
+        post :create, nil, { 'Authorization' => 'Token ' + @service.token }
       end
 
       it_behaves_like 'a successful JSON response' do
@@ -53,7 +37,7 @@ describe Api::V1::SessionsController do
     end
 
     context 'missing parameters' do
-      it 'should require `service_id` parameter' do
+      it 'should require `Authorization` header' do
         post :create
 
         response.body.should == '{"error":{"type":"invalid_request_error","message":"param not found: service_id","code":402}}'
@@ -65,9 +49,11 @@ describe Api::V1::SessionsController do
   describe '#get' do
 
     context 'valid parameters' do
-      before do
+      before :each do
+        @session = FactoryGirl.create(:session)
+
         request_payload = {
-          id: @session.id,
+          id: @session.id
         }
 
         get :get, request_payload
@@ -117,6 +103,10 @@ describe Api::V1::SessionsController do
     context 'succesful authentication' do
 
       before do
+        @session = FactoryGirl.create(:session)
+        @device = FactoryGirl.create(:device)
+        @device_account = FactoryGirl.create(:device_account, device_id: @device.id, service_id: @session.service.id, public_key: @key_pair.public_key.to_pem) 
+
         request_payload = {
           id: @session.id,
           device_id: @device.id,
@@ -138,6 +128,10 @@ describe Api::V1::SessionsController do
     context 'unsuccessful authentication' do
 
       before do
+        @session = FactoryGirl.create(:session)
+        @device = FactoryGirl.create(:device)
+        @device_account = FactoryGirl.create(:device_account, device_id: @device.id, service_id: @session.service.id, public_key: @key_pair.public_key.to_pem) 
+
         request_payload = {
           id: @session.id,
           device_id: @device.id,
@@ -166,6 +160,12 @@ describe Api::V1::SessionsController do
     end
 
     context 'missing parameters' do
+      before do
+        @session = FactoryGirl.create(:session)
+        @device = FactoryGirl.create(:device)
+        @device_account = FactoryGirl.create(:device_account, device_id: @device.id, service_id: @session.service.id, public_key: @key_pair.public_key.to_pem)
+      end
+
       it 'should require `id` parameter' do
         request_payload = {
           device_id: @device.id,
