@@ -14,7 +14,7 @@ class ApiController < ActionController::Base
 	#
 	
 	def record_not_found(e)
-    error(e.to_s, 'invalid_request_error', 404)
+    handle_error(e.to_s, 'invalid_request_error', 404)
 	end
 
   # == Parameter Missing
@@ -25,7 +25,7 @@ class ApiController < ActionController::Base
   def parameter_missing(e)
     #TODO Display an error message with all the required parameters, not just the one that triggered with exception.
     # This is not currently possible with strong_parameters. Check in with https://github.com/rails/strong_parameters/pull/117
-    error(e.to_s, 'invalid_request_error', 402)
+    handle_error(e.to_s, 'invalid_request_error', 406)
   end
 
   # == API Error Check
@@ -36,7 +36,7 @@ class ApiController < ActionController::Base
 
   def api_error_check(record, status_code = 500)
     message = 'Sorry something went wrong, we\'re lookgin into it. Please retry you\'re request shortly'
-    error(message, 'api_error', status_code, false) if ! record.valid?
+    handle_error(message, 'api_error', status_code, false) if ! record.valid?
   end
 
   # == Invalid Request Error Check
@@ -45,8 +45,8 @@ class ApiController < ActionController::Base
   # if any are found. Include any params provided by the remote client.
   #
 
-  def invalid_request_error_check(record, status_code = 402)
-    error(record.errors.full_messages, 'invalid_request_error', status_code) if ! record.valid?
+  def invalid_request_error_check(record, status_code = 406)
+    handle_error(record.errors.full_messages, 'invalid_request_error', status_code) if ! record.valid?
   end
 
   # == Unathenticated Error
@@ -54,7 +54,7 @@ class ApiController < ActionController::Base
   #
 
   def unauthenticated_error()
-    error('Unauthenticated. Please include your token in the Authorization header.', 'invalid_request_error', 401, false)
+    handle_error('Unauthenticated. Please include your token in the Authorization header.', 'invalid_request_error', 401, false)
   end
 
   # == Error
@@ -62,7 +62,7 @@ class ApiController < ActionController::Base
   # Display a JSON error
   #
 
-  def error(message, type = 'invalid_request_error', status_code = 402, include_params = true)
+  def handle_error(message, type = 'invalid_request_error', status_code = 402, include_params = true)
     response = {
       :error => {
         :type => type,
@@ -91,6 +91,8 @@ class ApiController < ActionController::Base
     authenticate_or_request_with_http_token do |token, options|
       @api_consumer = ApiToken.find_by(token: token).api_consumer
     end
+
+    !!@api_consumer
   end
 
 end

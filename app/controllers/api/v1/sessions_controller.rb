@@ -77,7 +77,7 @@ module Api
           # Create an RSA object from the device's public key
           public_key = OpenSSL::PKey::RSA.new device_account.public_key
         rescue OpenSSL::PKey::RSAError
-          return error('A public key is not available for the device.', 'api_error', 500)
+          return handle_error('A public key is not available for the device.', 'api_error', 500)
         end
         
         begin
@@ -85,12 +85,12 @@ module Api
           plaintext_token = public_key.public_decrypt Base64::decode64(params[:token])
         rescue
           # Unsuccessful authentication
-          return error('Unsuccessful authentication.', 'invalid_request_error', 401)
+          return handle_error('Unsuccessful authentication.', 'invalid_request_error', 401)
         end
 
         if plaintext_token != session.token
           # Unsuccessful authentication
-          return error('Unsuccessful authentication.', 'invalid_request_error', 401)
+          return handle_error('Unsuccessful authentication.', 'invalid_request_error', 401)
         end
       end
 

@@ -1,6 +1,9 @@
 module Api
   module V1
     class DevicesController < ApiController
+
+      before_action :restrict_access, except: :create
+
       respond_to :json
 
       # == Create a device 
@@ -26,27 +29,26 @@ module Api
         params.permit(:device_identifier)
 
         # Authenticate the user
-        user = User.find_by_email(params[:email])
+        begin
+          user = User.find_by(email: params[:email])
 
-        if ! user && user.authenticate(params[:password])
-          # Don't send the plaintext password back to the remote client
-          params.delete :password
-
-          return error('Invalid email and password combination.', 'invalid_request_error', 401);
+          raise ActiveRecord::RecordNotFound unless user && user.authenticate(params[:password])
+        rescue ActiveRecord::RecordNotFound, Exception
+          return handle_error('Invalid email and password combination.', 'invalid_request_error', 401);
         end
 
         @device = Device.new
 
         # Attach a device type to the device
-        if params[:device_identifier]
-          device_type = DeviceTypes.find_by_identifier(params[:device_identifier])
-
-          # If no device type is found, get the `Unknown` device type
-          if device_type.nil?
-            device_type = DeviceTypes.find_by_identifier('')
+        if defined? params[:device_identifier]
+          begin
+            device_type = DeviceType.find_by(identifier: params[:device_identifier])
+          rescue ActiveRecord::RecordNotFound
+            # If no device type is found, get the `Unknown` device type
+            device_type = DeviceType.find_by(identifier: '')
           end
         else
-          device_type = DeviceTypes.find_by_identifier('')
+          device_type = DeviceType.find_by(identifier: '')
         end
 
         @device.device_type_id = (defined? device.id) ? device.id : nil
@@ -62,10 +64,8 @@ module Api
       # == Register a device to a service.
       #
       # Reqired parameters:
-      # => device_id
       # => service_id
       # => public_key
-      # => signature = hmac_sha1(device.auth_token, <device_id>:<service_id>:<public_key>)
       #
       # Returns:
       # => device_id
@@ -74,33 +74,26 @@ module Api
       #
 
       def register
-        attributes = params.required(:device_id).required(:service_id).required(:public_key)
-        params.required(:signature)
+        attributes = params.required(:service_id).required(:public_key)
 
-        # Make sure the device exists
-        device = Device.find(:device_id)
-
-        # Make sure the given signature is valid
-        message = attributes.map{|k,v| "#{v}"}.join(":")
-
-        if ! verify_signature(device.auth_token, message, params[:signature])
-          return error("Invalid signature: '#{params[:signature]}'.", 'invalid_request_error', 401)
-        end
+        # Make sure the token is a valid device token
+        unathenticated_error if ! @api_consumer.is_a? Device
+        device = @api_consumer
 
         # Check the public key
         begin
           # Create an RSA object from the device's public key to test if it is valid
           public_key = OpenSSL::PKey::RSA.new params[:public_key]
-        rescue OpenSSL::PKey::RSAError
-          return error('The public key you provided is not a valid public key.')
-        end
 
-        # Make sure the key is actually a pulic key, and not private
-        if ! public_key.public?
-          return error('The public key you provided is not a valid public key.')
+           # Make sure the key is actually a pulic key, and not private
+          raise Exception unless public_key.public?
+        rescue OpenSSL::PKey::RSAError, Exception
+          return handle_error('The public key you provided is not a valid public key.')
         end
         
-        device_account = DeviceAccount.create(attributes)
+        device_account = DeviceAccount.new(attributes)
+        device_account.device = device
+        device_account.save
 
         # Using remote client provided data, so check it for errors
         invalid_request_error_check(device_account)
