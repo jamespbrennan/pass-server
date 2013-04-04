@@ -1,0 +1,24 @@
+
+// Login
+// --------------------------------------------------
+
+.login, .create-account {
+  @extend .span4;
+  @extend .offset4;
+
+  h1 {
+    text-align: center;
+  }
+
+  input[type="text"], input[type="password"] {
+    @extend .input-block-level;
+    padding: 20px 10px;
+    backgroud: red;
+  }
+}
+.btn-login, .btn-signup {
+  @extend .btn;
+  @extend .btn-primary;
+  @extend .btn-block;
+  @extend .btn-large;
+}

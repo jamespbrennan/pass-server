@@ -1,21 +1,20 @@
 <article>
-	<div class="login-form">
-		<h1>Log In</h1>
-		<%= form_tag sessions_path do %>
-			<div class="control-group<?php echo has_error('') ?>">
-				<label class="control-label"><%= label_tag :email %><br /></label>
-				<div class="controls">
-					<%= text_field_tag :email, params[:email] %>
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label"><%= label_tag :password %></label>
-				<div class="controls">
-					<%= password_field_tag :password %>
-				</div>
-			</div>
-			<div class="form-actions"><%= submit_tag "Log In", class: "btn-login" %></div>
-		<% end %>
-	</div>
+  <div class="login">
+    <h1>Log In</h1>
+    <%= form_tag sessions_path do %>
+      <div class="control-group">
+        <label class="control-label"><%= label_tag :email %></label>
+        <div class="controls">
+          <%= text_field_tag :email, params[:email] %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label"><%= label_tag :password %></label>
+        <div class="controls">
+          <%= password_field_tag :password %>
+        </div>
+      </div>
+      <div class="form-actions"><%= submit_tag "Log In", class: "btn-login" %></div>
+    <% end %>
+  </div>
 </article>
-
