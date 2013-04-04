@@ -1,16 +1,12 @@
 <h1>Devices</h1>
-<% if @devices %>
-	<% @devices.each do |d| %>
-	<article>
-		<hr />
-		<div class="device">
-			<h2><%= link_to d.name, d %> <small><%= d.device_type.name %></small></h2>
-		</div>
-		<div class="device-actions">
-			<%= link_to "View", d, :class => "btn-view pull-right" %>
-		</div>
-	</article>
-	<% end %>
-<% else %>
-	<p>You don't have any devices!</p>
+<% @devices.each do |device| %>
+<article>
+  <hr />
+  <div class="device">
+    <%= link_to device.name, device %><% if device.device_type %> <%= device.device_type.name %><% end %>
+  </div>
+  <div class="device-actions">
+    <%= link_to "View", device, :class => "btn-view pull-right" %>
+  </div>
+</article>
 <% end %>

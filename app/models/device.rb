@@ -18,7 +18,7 @@ class Device < ActiveRecord::Base
   has_many :services, through: :device_accounts
   has_one :api_token, as: :api_consumer
 
-  validates_presence_of :user_id
+  validates_presence_of :user_id, :name
 
   after_create :create_api_token
 

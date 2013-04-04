@@ -226,3 +226,9 @@ input[type="submit"].btn {
   color: $grayDark;
   text-decoration: none;
 }
+
+// Semantic Classes
+
+.btn-view {
+  @extend .btn;
+}

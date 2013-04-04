@@ -3,7 +3,7 @@ class DevicesController < ApplicationController
 	before_filter :authorize
 
 	def index
-		@devices = current_user.devices.includes(:device_type)
+		@devices = current_user.devices
 	end
 
 	def show

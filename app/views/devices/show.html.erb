@@ -1,6 +1,9 @@
 <h1>Device</h1>
-<article class="row">
+<article>
 	<div class="span12">
-		<h2><%= @device.name %></h2>
+		<h3><%= @device.name %> <small><% if @device.device_type %> <%= @device.device_type.name %><% end %></small></h3>
+    <% @device.sessions.each do |session| %>
+    
+    <% end %>
 	</div>
 </article>
