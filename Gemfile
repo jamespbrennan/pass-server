@@ -11,8 +11,6 @@ group :assets do
   gem 'sass-rails',   '~> 4.0.0.beta1'
   gem 'coffee-rails', '~> 4.0.0.beta1'
   
-  # gem 'therubyracer'
-
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', platforms: :ruby
 
@@ -44,10 +42,10 @@ group :test do
 end
 
 # Use unicorn as the app server
-# gem 'unicorn'
+gem 'unicorn'
 
 # Deploy with Capistrano
-# gem 'capistrano', group: :development
+gem 'capistrano'
 
 # To use debugger
 # gem 'debugger'
