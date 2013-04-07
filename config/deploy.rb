@@ -49,3 +49,14 @@ namespace :deploy do
   end
   before "deploy", "deploy:check_revision"
 end
+
+namespace :deploy do
+  namespace :assets do
+    task :precompile, :roles => assets_role, :except => { :no_release => true } do
+      run <<-CMD.compact
+        cd -- #{latest_release.shellescape} &&
+        #{rake} RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} assets:precompile
+      CMD
+    end
+  end
+end
