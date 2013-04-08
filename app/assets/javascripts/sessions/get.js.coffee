@@ -11,7 +11,7 @@ window.onload = () ->
   qr_wrapper.innerHTML = create_qrcode(text)
 
   # Connect to the Socket.IO server
-  socket = io.connect('http://localhost:8080')
+  socket = io.connect('http://api.passauth.net:3001')
 
   # When the session is updated, notify the parent page
   socket.on('session_updated', (message) ->

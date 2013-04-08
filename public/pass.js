@@ -8,7 +8,7 @@ window._pass = window._pass || {};
   if( ! session_id ) throw new Error('window._pass.session_id must be set to a valid session_id');
 
   iframe = document.createElement('iframe');
-  iframe.src = 'http://localhost:3000/sessions/get?id=' + session_id;
+  iframe.src = 'https://api.passauth.net/sessions/get?id=' + session_id;
   iframe.id = 'pass-login';
   iframe.seamless = true;
   iframe.frameborder = 0;
@@ -35,7 +35,7 @@ window._pass = window._pass || {};
 	target.appendChild(iframe);
 
   window.addEventListener('message', function(e) {
-      if (e.origin == 'http://localhost:3000') {
+      if (e.origin == 'https://api.passauth.net') {
         if(e.data.is_authenticated) {
           // If no page is provided to redirect to, just refresh the current page
           if( ! window._pass.redirect_to ) self.location.reload(true);
