@@ -6,7 +6,7 @@ TIMEOUT=${TIMEOUT-60}
 APP_ROOT=/home/deployer/apps/pass-server/current
 APP=$APP_ROOT/realtime/messenger.js
 PID=$APP_ROOT/tmp/pids/redis.pid
-CMD="forever start -a -l $APP_ROOT/log/forever.log -o $APP_ROOT/log/out.log -e $APP_ROOT/log/err.log $APP"
+CMD="/usr/bin/forever start -a -l $APP_ROOT/log/forever.log -o $APP_ROOT/log/node_out.log -e $APP_ROOT/log/node_err.log $APP"
 AS_USER=deployer
 set -u
 
@@ -34,7 +34,7 @@ start)
   run "$CMD"
   ;;
 stop)
-  forever stop $APP && exit 0
+  /usr/bin/forever stop $APP && exit 0
   echo >&2 "Not running"
   ;;
 force-stop)
@@ -42,35 +42,12 @@ force-stop)
   echo >&2 "Not running"
   ;;
 restart|reload)
-  forever stop $APP && echo reloaded OK && exit 0
+  /usr/bin/forever stop $APP && run "$CMD" && echo reloaded OK && exit 0
   echo >&2 "Couldn't reload, starting '$CMD' instead"
   run "$CMD"
   ;;
-upgrade)
-  if sig USR2 && sleep 2 && sig 0 && oldsig QUIT
-  then
-    n=$TIMEOUT
-    while test -s $OLD_PIN && test $n -ge 0
-    do
-      printf '.' && sleep 1 && n=$(( $n - 1 ))
-    done
-    echo
-
-    if test $n -lt 0 && test -s $OLD_PIN
-    then
-      echo >&2 "$OLD_PIN still exists after $TIMEOUT seconds"
-      exit 1
-    fi
-    exit 0
-  fi
-  echo >&2 "Couldn't upgrade, starting '$CMD' instead"
-  run "$CMD"
-  ;;
-reopen-logs)
-  sig USR1
-  ;;
 *)
-  echo >&2 "Usage: $0 <start|stop|restart|upgrade|force-stop|reopen-logs>"
+  echo >&2 "Usage: $0 <start|stop|restart|force-stop>"
   exit 1
   ;;
 esac
