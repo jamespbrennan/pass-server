@@ -16,4 +16,4 @@
 /tmp
 
 # Ignore node modules
-/realtime/node_modules
+/realtime/node_modules/*
