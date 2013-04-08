@@ -1,23 +1,18 @@
 #!/bin/sh
+#
+# Simple Redis init.d script conceived to work on Linux systems
+# as it does use of the /proc filesystem.
 set -e
 
-# Feel free to change any of the following variables for your app:
-TIMEOUT=${TIMEOUT-60}
+REDISPORT=6379
 APP_ROOT=/home/deployer/apps/pass-server/current
-PID=$APP_ROOT/tmp/pids/redis.pid
-CMD="redis-server $APP_ROOT/config/redis.conf"
+PIDFILE=/var/run/redis_${REDISPORT}.pid
+CONF="$APP_ROOT/config/redis.conf"
+CMD="/usr/local/bin/redis-server $CONF"
+CLIEXEC=/usr/local/bin/redis-cli
+
 AS_USER=deployer
 set -u
-
-OLD_PIN="$PID.oldbin"
-
-sig () {
-  test -s "$PID" && kill -$1 `cat $PID`
-}
-
-oldsig () {
-  test -s $OLD_PIN && kill -$1 `cat $OLD_PIN`
-}
 
 run () {
   if [ "$(id -un)" = "$AS_USER" ]; then
@@ -27,26 +22,54 @@ run () {
   fi
 }
 
+
 case "$1" in
-start)
-  sig 0 && echo >&2 "Already running" && exit 0
-  run "$CMD"
-  ;;
-stop)
-  sig QUIT && exit 0
-  echo >&2 "Not running"
-  ;;
-force-stop)
-  sig TERM && exit 0
-  echo >&2 "Not running"
-  ;;
-restart|reload)
-  sig HUP && echo reloaded OK && exit 0
-  echo >&2 "Couldn't reload, starting '$CMD' instead"
-  run "$CMD"
-  ;;
-*)
-  echo >&2 "Usage: $0 <start|stop|restart|force-stop>"
-  exit 1
-  ;;
+  start)
+    if [ -f $PIDFILE ]
+    then
+      echo >&2 "$PIDFILE exists, process is already running or crashed"
+    else
+      echo >&2 "Starting Redis server..."
+      run "$CMD"
+    fi
+    ;;
+  stop)
+    if [ ! -f $PIDFILE ]
+    then
+      echo >&2 "$PIDFILE does not exist, process is not running"
+    else
+      PID=$(cat $PIDFILE)
+      echo >&2 "Stopping ..."
+      $CLIEXEC -p $REDISPORT shutdown
+      while [ -x /proc/${PID} ]
+      do
+          echo >&2 "Waiting for Redis to shutdown ..."
+          sleep 1
+      done
+      echo >&2 "Redis stopped"
+    fi
+    ;;
+  restart|reload)
+    if [ ! -f $PIDFILE ]
+    then
+      echo >&2 "$PIDFILE does not exist, process is not running"
+    else
+      PID=$(cat $PIDFILE)
+      echo >&2 "Stopping ..."
+      $CLIEXEC -p $REDISPORT shutdown
+      while [ -x /proc/${PID} ]
+      do
+          echo >&2 "Waiting for Redis to shutdown ..."
+          sleep 1
+      done
+      echo >&2 "Redis stopped"
+    fi
+    
+    echo >&2 "Starting Redis server..."
+    run "$CMD"
+    ;;
+  *)
+    echo >&2 "Usage: $0 <start|stop|restart>"
+    exit 1
+    ;;
 esac
