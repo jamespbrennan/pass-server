@@ -26,17 +26,12 @@ namespace :deploy do
       run "/etc/init.d/unicorn_#{application} #{command}"
     end
   end
-
-  desc "Refresh shared node_modules symlink to current node_modules"
-  task :refresh_symlink do
-    run "rm -rf #{current_path}/realtime/node_modules && ln -s #{shared_path}/realtime/node_modules #{current_path}/realtime/node_modules"
-  end
  
   desc "Install node modules non-globally"
   task :npm_install do
     run "cd #{current_path}/realtime && npm install"
   end
-  after "deploy:update_code", "deploy:refresh_symlink", "deploy:npm_install"
+  after "deploy:update_code", "deploy:npm_install"
 
   task :setup_config, roles: :app do
     sudo "ln -nfs #{current_path}/config/nginx.conf /etc/nginx/sites-enabled/#{application}"
