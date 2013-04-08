@@ -66,7 +66,7 @@ case "$1" in
     fi
     
     echo >&2 "Starting Redis server..."
-    run "$CMD"
+    run "$CMD" && echo reloaded OK && exit 0
     ;;
   *)
     echo >&2 "Usage: $0 <start|stop|restart>"
