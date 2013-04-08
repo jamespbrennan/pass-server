@@ -29,7 +29,7 @@ namespace :deploy do
  
   desc "Install node modules non-globally"
   task :npm_install do
-    run "cd #{current_path}/realtime && npm install"
+    run "cd #{release_path}/realtime && npm install"
   end
   after "deploy:update_code", "deploy:npm_install"
 
