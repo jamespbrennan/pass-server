@@ -26,12 +26,6 @@ namespace :deploy do
       run "/etc/init.d/unicorn_#{application} #{command}"
     end
   end
- 
-  desc "Install node modules non-globally"
-  task :npm_install do
-    run "cd #{release_path}/realtime && npm install"
-  end
-  after "deploy:update_code", "deploy:npm_install"
 
   task :setup_config, roles: :app do
     sudo "ln -nfs #{current_path}/config/nginx.conf /etc/nginx/sites-enabled/#{application}"
@@ -69,4 +63,22 @@ namespace :deploy do
       CMD
     end
   end
+end
+
+namespace :npm do
+  task :create_symlink, :roles => :app do
+    shared_dir = File.join(shared_path, 'node_modules')
+    release_dir = File.join(current_release, 'node_modules')
+    run("mkdir -p #{shared_dir} && ln -nfs #{shared_dir} #{release_dir}")
+  end
+
+  task :install, :roles => :app do
+    npm.create_symlink
+    shared_dir = File.join(shared_path, 'node_modules')
+    run "cd #{release_path} && npm install"
+  end
+end
+
+after "deploy:update_code" do
+  npm.install
 end
