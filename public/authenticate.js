@@ -8306,10 +8306,10 @@ var qrcode = function() {
     qr_wrapper = document.getElementById('qr-wrapper');
     text = qr_wrapper.dataset.sessionId + ':' + qr_wrapper.dataset.serviceId + ':' + qr_wrapper.dataset.token;
     qr_wrapper.innerHTML = create_qrcode(text);
-    socket = io.connect('http://api.passauth.net:3001');
+    socket = io.connect('https://api.passauth.net:3001/');
     socket.on('session_updated', function(message) {
-      if (window.parent) {
-        return window.parent.postMessage(message, 'http://service.localhost');
+      if (window.parent != window) {
+        return window.parent.postMessage(message, window.parent.location.origin);
       }
     });
     return socket.emit('subscribe', qr_wrapper.dataset.sessionId);
