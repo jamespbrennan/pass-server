@@ -22,7 +22,7 @@ class DeviceAccount < ActiveRecord::Base
   def valid_public_key
     if self.public_key_changed?
       begin
-        throw Exception if OpenSSL::PKey::RSA.new(self.public_key).private?
+        throw Exception unless OpenSSL::PKey::RSA.new(self.public_key).public?
       rescue
         errors.add(:public_key, 'The public_key attribute must contain a valid RSA public key.')
       end

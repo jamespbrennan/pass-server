@@ -8,7 +8,7 @@ window._pass = window._pass || {};
   if( ! session_id ) throw new Error('window._pass.session_id must be set to a valid session_id');
 
   iframe = document.createElement('iframe');
-  iframe.src = 'https://api.passauth.net/sessions/get?id=' + session_id;
+  iframe.src = 'https://api.passauth.net/sessions/authenticate?id=' + session_id;
   iframe.id = 'pass-login';
   iframe.seamless = true;
   iframe.frameborder = 0;

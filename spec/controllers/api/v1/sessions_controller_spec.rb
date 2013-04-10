@@ -40,6 +40,10 @@ describe Api::V1::SessionsController do
 
   describe '#get' do
 
+  end
+
+  describe '#authenticate' do
+
     context 'valid parameters' do
       before :each do
         @session = FactoryGirl.create(:session)
@@ -48,7 +52,7 @@ describe Api::V1::SessionsController do
           id: @session.id
         }
 
-        get :get, request_payload
+        get :authenticate, request_payload
       end
 
       it 'should retrieve a content-type of html' do
@@ -78,15 +82,15 @@ describe Api::V1::SessionsController do
 
     context 'missing parameters' do
       it 'should require `id` parameter' do
-        get :get
+        get :authenticate
 
-        response.body.should == '{"error":{"type":"invalid_request_error","message":"param not found: id","code":402}}'
+        response.body.should == '{"error":{"type":"invalid_request_error","message":"param not found: id","code":406}}'
       end
     end
 
   end
 
-  describe '#authenticate' do
+  describe '#do_authentication' do
 
     # it 'should only allow `device_id`, `session_id`, and `token` parameters' do
     #   @controller.query_parameters.keys.should eq(['device_id', 'session_id', 'token'])
@@ -106,7 +110,7 @@ describe Api::V1::SessionsController do
         }
 
         request.env['HTTP_AUTHORIZATION'] = "Token #{@device.api_token.token}"
-        post :authenticate, request_payload
+        post :do_authentication, request_payload
       end
 
       it_behaves_like 'a successful JSON response' do
@@ -131,7 +135,7 @@ describe Api::V1::SessionsController do
         }
 
         request.env['HTTP_AUTHORIZATION'] = "Token #{@device.api_token.token}"
-        post :authenticate, request_payload
+        post :do_authentication, request_payload
       end
 
       it 'should retrieve a content-type of json' do
@@ -160,7 +164,7 @@ describe Api::V1::SessionsController do
       end
 
       it 'should require `id` parameter' do
-        post :authenticate, nil, { authorization: "Token #{@device.api_token.token}" }
+        post :do_authentication, nil, { authorization: "Token #{@device.api_token.token}" }
 
         response.code == 401
         # response.body.should == '{"error":{"type":"invalid_request_error","message":"param not found: id","code":402}}'

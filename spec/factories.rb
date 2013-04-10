@@ -16,6 +16,7 @@ FactoryGirl.define do
   end
 
   factory :device do |f|
+    f.name 'My device'
     user
   end
   

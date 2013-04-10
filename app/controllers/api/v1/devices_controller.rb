@@ -25,7 +25,7 @@ module Api
       def create
         params.required(:email)
         params.required(:password)
-        params.permit(:name)
+        params.required(:name)
         params.permit(:device_identifier)
 
         # Authenticate the user
@@ -74,29 +74,17 @@ module Api
       #
 
       def register
-        attributes = params.required(:service_id).required(:public_key)
+        params.required(:service_id)
+        params.required(:public_key)
 
         # Make sure the token is a valid device token
-        unathenticated_error if ! @api_consumer.is_a? Device
+        unathenticated_error unless @api_consumer.is_a? Device
         device = @api_consumer
-
-        # Check the public key
-        begin
-          # Create an RSA object from the device's public key to test if it is valid
-          public_key = OpenSSL::PKey::RSA.new params[:public_key]
-
-           # Make sure the key is actually a pulic key, and not private
-          raise Exception unless public_key.public?
-        rescue OpenSSL::PKey::RSAError, Exception
-          return handle_error('The public key you provided is not a valid public key.')
-        end
         
-        device_account = DeviceAccount.new(attributes)
-        device_account.device = device
-        device_account.save
+        @device_account = DeviceAccount.create(service_id: params[:service_id], public_key: Base64::decode64(params[:public_key]), device: device)
 
         # Using remote client provided data, so check it for errors
-        invalid_request_error_check(device_account)
+        invalid_request_error_check(@device_account)
       end
 
       private

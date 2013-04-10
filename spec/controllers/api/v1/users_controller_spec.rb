@@ -46,7 +46,7 @@ describe Api::V1::UsersController do
 
         post :create, request_payload
 
-        response.body.should == '{"error":{"type":"invalid_request_error","message":"param not found: email","code":402}}'
+        response.body.should == '{"error":{"type":"invalid_request_error","message":"param not found: email","code":406}}'
       end
 
       it 'should require `password` parameter' do
@@ -56,7 +56,7 @@ describe Api::V1::UsersController do
 
         post :create, request_payload
 
-        response.body.should == '{"error":{"type":"invalid_request_error","message":"param not found: password","code":402}}'
+        response.body.should == '{"error":{"type":"invalid_request_error","message":"param not found: password","code":406}}'
       end
     end
 

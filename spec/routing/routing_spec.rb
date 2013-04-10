@@ -88,7 +88,11 @@ describe Api::V1::SessionsController do
   end
 
   it 'should route to #activate for api subdomain' do
-    post('http://api.domain.com/sessions/authenticate').should route_to(controller: 'api/v1/sessions', action: 'authenticate', subdomain: 'api')
+    get('http://api.domain.com/sessions/authenticate').should route_to(controller: 'api/v1/sessions', action: 'authenticate', subdomain: 'api')
+  end
+
+  it 'should route to #activate for api subdomain' do
+    post('http://api.domain.com/sessions/authenticate').should route_to(controller: 'api/v1/sessions', action: 'do_authentication', subdomain: 'api')
   end
 
   it 'should not route to #activate for regular domain' do

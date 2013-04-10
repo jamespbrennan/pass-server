@@ -2,7 +2,7 @@ module Api
   module V1
     class SessionsController < ApiController
 
-      before_action :restrict_access, except: :get
+      before_action :restrict_access, except: :authenticate
 
       respond_to :json
 
@@ -25,13 +25,25 @@ module Api
 
       # == Get a session
       #
+      # Returns:
+      # => id
+      # => service_id
+      # => user
+      #
+
+      def get
+
+      end
+
+      # == Get a session
+      #
       # Required parameters:
       # => id
       #
       # Returns login QR code HTML
       #
 
-      def get
+      def authenticate
         params.required(:id)
 
         @session = Session.find(params[:id])
@@ -52,7 +64,7 @@ module Api
       # => id
       #
 
-      def authenticate
+      def do_authentication
         params.required(:id)
 
         # Grab the device that is trying to authenticate

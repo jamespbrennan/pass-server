@@ -41,12 +41,12 @@ class ApiController < ActionController::Base
 
   # == Invalid Request Error Check
   #
-  # Check for active record errors. Set status header to 402 (typically) and display errors as JSON 
+  # Check for active record errors. Set status header to 406 (typically) and display errors as JSON 
   # if any are found. Include any params provided by the remote client.
   #
 
   def invalid_request_error_check(record, status_code = 406)
-    handle_error(record.errors.full_messages, 'invalid_request_error', status_code) if ! record.valid?
+    handle_error(record.errors.full_messages, 'invalid_request_error', status_code) unless record.valid?
   end
 
   # == Unathenticated Error
