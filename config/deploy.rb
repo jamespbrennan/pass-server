@@ -74,7 +74,7 @@ namespace :npm do
 
   task :install, :roles => :app do
     npm.create_symlink
-    shared_dir = File.join(shared_path, 'node_modules')
+    shared_dir = File.join(shared_path, 'realtime/node_modules')
     run "cd #{release_path} && npm install"
   end
 end
