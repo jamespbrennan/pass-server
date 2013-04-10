@@ -18,9 +18,11 @@
         <a class="brand" href="/">Pass</a>
         <div class="nav-collapse collapse">
           <ul class="nav">
+            <% if current_user %>
             <li>
               <a href="/">Devices</a>
             </li>
+            <% end %>
           </ul>
           <ul class="nav pull-right">
             <% if current_user %>
@@ -48,7 +50,7 @@
   </div>
   <div class="container">
     <% flash.each do |name, msg| %>
-      <%= content_tag :div, msg, id: "flash_#{name}" %>
+      <%= content_tag :div, msg, class: "alert-#{name}" %>
     <% end %>
 
     <%= yield %>
