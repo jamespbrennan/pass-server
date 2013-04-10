@@ -77,3 +77,14 @@
 .alert-block p + p {
   margin-top: 5px;
 }
+
+// 
+
+.alert-alert {
+  @extend .alert;
+  @extend .alert-error;
+}
+
+.alert-notice {
+  @extend .alert;
+}

@@ -500,7 +500,7 @@
 
   // in these cases the gradient won't cover the background, so we override
   &:hover, &:focus, &:active, &.active, &.disabled, &[disabled] {
-    color: $textColor;
+    color: $grayLighter;
     background-color: $endColor;
     *background-color: darken($endColor, 5%);
   }

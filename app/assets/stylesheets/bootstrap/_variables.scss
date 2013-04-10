@@ -6,7 +6,6 @@
 // Global values
 // --------------------------------------------------
 
-
 // Grays
 // -------------------------
 $black:                 #000 !default;
@@ -20,15 +19,18 @@ $white:                 #fff !default;
 
 // Accent colors
 // -------------------------
-$blue:                  #049cdb !default;
+$blue:                  #327195 !default;
 $blueDark:              #0064cd !default;
-$green:                 #46a546 !default;
-$red:                   #9d261d !default;
-$yellow:                #ffc40d !default;
+$green:                 #6ecfb1 !default;
+$red:                   #ff1a1a !default;
+$yellow:                #ffdd61 !default;
 $orange:                #f89406 !default;
 $pink:                  #c3325f !default;
 $purple:                #7a43b6 !default;
 
+$primary: $blue !default;
+$secondary: #349d83 !default;
+$tertiary: $yellow !default;
 
 // Scaffolding
 // -------------------------
@@ -71,8 +73,8 @@ $paddingSmall:          2px 10px !default;  // 26px
 $paddingMini:           0px 6px !default;   // 22px
 
 $baseBorderRadius:      4px !default;
-$borderRadiusLarge:     6px !default;
-$borderRadiusSmall:     3px !default;
+$borderRadiusLarge:     4px !default;
+$borderRadiusSmall:     4px !default;
 
 
 // Tables
@@ -88,11 +90,11 @@ $btnBackground:                     $white !default;
 $btnBackgroundHighlight:            darken($white, 10%) !default;
 $btnBorder:                         #ccc !default;
 
-$btnPrimaryBackground:              $linkColor !default;
-$btnPrimaryBackgroundHighlight:     adjust-hue($btnPrimaryBackground, 20%) !default;
+$btnPrimaryBackground:              $primary !default;
+$btnPrimaryBackgroundHighlight:     darken($btnPrimaryBackground, 10%) !default;
 
-$btnInfoBackground:                 #5bc0de !default;
-$btnInfoBackgroundHighlight:        #2f96b4 !default;
+$btnInfoBackground:                 $secondary !default;
+$btnInfoBackgroundHighlight:        darken($btnInfoBackground, 10%) !default;
 
 $btnSuccessBackground:              #62c462 !default;
 $btnSuccessBackgroundHighlight:     #51a351 !default;
