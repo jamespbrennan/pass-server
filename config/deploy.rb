@@ -67,15 +67,14 @@ end
 
 namespace :npm do
   task :create_symlink, :roles => :app do
-    shared_dir = File.join(shared_path, 'node_modules')
-    release_dir = File.join(current_release, 'node_modules')
+    shared_dir = File.join(shared_path, 'realtime/node_modules')
+    release_dir = File.join(current_release, 'realtime/node_modules')
     run("mkdir -p #{shared_dir} && ln -nfs #{shared_dir} #{release_dir}")
   end
 
   task :install, :roles => :app do
     npm.create_symlink
-    shared_dir = File.join(shared_path, 'realtime/node_modules')
-    run "cd #{release_path} && npm install"
+    run "cd #{release_path}/realtime && npm install"
   end
 end
 
