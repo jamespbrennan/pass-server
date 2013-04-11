@@ -1,11 +1,5 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
-devicetypes = DeviceType.create([
+
+DeviceType.create([
 	{name: 'Unknown', identifier: '', manufacturer: 'Unknown'},
 	{name: 'iPhone Simulator', identifier: 'i386', manufacturer: 'Apple'},
 	{name: 'iPod Touch', identifier: 'iPod1,1', manufacturer: 'Apple'},
@@ -22,4 +16,9 @@ devicetypes = DeviceType.create([
 	{name: 'iPhone 4S', identifier: 'iPhone4,1', manufacturer: 'Apple'},
 	{name: 'iPhone 5', identifier: 'iPhone5,1', manufacturer: 'Apple'},
 	{name: 'iPhone 5', identifier: 'iPhone5,2', manufacturer: 'Apple'},
+])
+
+CallbackType.create([
+	{name: 'authentication'},
+	{name: 'user_creation'}
 ])

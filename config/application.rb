@@ -1,7 +1,7 @@
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
-require 'uri'
+require 'net/http'
 require 'openssl'
 require 'base64'
 
