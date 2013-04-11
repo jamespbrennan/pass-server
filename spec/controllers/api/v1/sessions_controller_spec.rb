@@ -39,7 +39,37 @@ describe Api::V1::SessionsController do
   end
 
   describe '#get' do
+    context 'valid parameters' do
+      before :each do
+        @user = FactoryGirl.create(:user)
+        @device = FactoryGirl.create(:device, user: @user)
+        @service = FactoryGirl.create(:service)
+        @device_account = FactoryGirl.create(:device_account, device: @device, service: @service)
+        @session = FactoryGirl.create(:session, service: @service, device: @device)
 
+        request_payload = {
+          id: @session.id
+        }
+
+        request.env['HTTP_AUTHORIZATION'] = "Token #{@service.api_tokens.first.token}"
+        get :get, request_payload
+      end
+
+      it_behaves_like 'a successful JSON response' do
+      end
+
+      it 'should include id' do
+        response.body.should include "\"id\":#{@session.id}"
+      end
+
+      it 'should include user id' do
+        response.body.should include "\"id\":#{@user.id}"
+      end
+
+      it 'should include user email' do
+        response.body.should include "\"email\":\"#{@user.email}\""
+      end
+    end
   end
 
   describe '#authenticate' do

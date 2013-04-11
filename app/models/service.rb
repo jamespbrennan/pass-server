@@ -15,6 +15,7 @@ class Service < ActiveRecord::Base
   has_many :device_accounts
   has_many :devices, through: :device_accounts
   has_many :api_tokens, as: :api_consumer
+  has_many :callbacks
 
   validates_presence_of :url
   validate :valid_url

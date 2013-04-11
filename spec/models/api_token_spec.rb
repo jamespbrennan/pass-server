@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: api_tokens
+#
+#  id                :integer          not null, primary key
+#  token             :string(32)
+#  api_consumer_id   :integer
+#  api_consumer_type :string(255)
+#  created_at        :datetime
+#  updated_at        :datetime
+#
+
 require 'spec_helper'
 
 describe ApiToken do

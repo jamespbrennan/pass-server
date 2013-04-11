@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130327015819) do
+ActiveRecord::Schema.define(version: 20130411021125) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,20 @@ ActiveRecord::Schema.define(version: 20130327015819) do
 
   add_index "api_tokens", ["api_consumer_id", "api_consumer_type"], name: "index_api_tokens_on_api_consumer_id_and_api_consumer_type"
   add_index "api_tokens", ["token"], name: "index_api_tokens_on_token"
+
+  create_table "callback_types", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "callbacks", force: true do |t|
+    t.string   "address"
+    t.integer  "callback_type_id"
+    t.integer  "service_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "device_accounts", force: true do |t|
     t.text     "public_key"

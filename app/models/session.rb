@@ -17,6 +17,7 @@
 class Session < ActiveRecord::Base
   belongs_to :service
   belongs_to :device
+  has_one :user, through: :device
 
   validates :service_id, :presence => true
 
