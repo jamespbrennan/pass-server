@@ -12,6 +12,8 @@ window._pass = window._pass || {};
   iframe.id = 'pass-login';
   iframe.seamless = true;
   iframe.frameborder = 0;
+  iframe.width = "180px";
+  iframe.height = "180px";
 	
   if( window._pass.target )
   {
