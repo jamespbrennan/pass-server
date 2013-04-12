@@ -33,7 +33,7 @@ describe Api::V1::DevicesController do
       @key_pair = OpenSSL::PKey::RSA.new 2048
 
       request.env['HTTP_AUTHORIZATION'] = "Token #{@device.api_token.token}"
-      post :register, { service_id: @service.id, public_key: Base64::encode64(@key_pair.public_key.to_pem) }
+      post :register, { service_id: @service.id, public_key: @key_pair.public_key.to_pem }
     end
 
     it_behaves_like 'a successful JSON response'

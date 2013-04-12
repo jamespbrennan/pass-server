@@ -68,10 +68,12 @@ module Api
       #
       # Requred parameters:
       # => id
+      # => token
       #
 
       def do_authentication
         params.required(:id)
+        params.required(:token)
 
         # Grab the device that is trying to authenticate
         unathenticated_error if ! @api_consumer.is_a? Device
@@ -101,12 +103,9 @@ module Api
         begin
           # Decrypt the provided token with the device's public key
           plaintext_token = public_key.public_decrypt Base64::decode64(params[:token])
-        rescue
-          # Unsuccessful authentication
-          return handle_error('Unsuccessful authentication.', 'invalid_request_error', 401)
-        end
 
-        if plaintext_token != session.token
+          raise Exception if plaintext_token != session.token
+        rescue
           # Unsuccessful authentication
           return handle_error('Unsuccessful authentication.', 'invalid_request_error', 401)
         end

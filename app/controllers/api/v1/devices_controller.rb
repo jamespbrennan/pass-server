@@ -81,7 +81,7 @@ module Api
         unathenticated_error unless @api_consumer.is_a? Device
         device = @api_consumer
         
-        @device_account = DeviceAccount.create(service_id: params[:service_id], public_key: Base64::decode64(params[:public_key]), device: device)
+        @device_account = DeviceAccount.create(service_id: params[:service_id], public_key: params[:public_key], device: device)
 
         # Using remote client provided data, so check it for errors
         invalid_request_error_check(@device_account)
