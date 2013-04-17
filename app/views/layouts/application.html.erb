@@ -27,7 +27,7 @@
           <ul class="nav pull-right">
             <% if current_user %>
             <li>
-              <a href="<%= users_path %>">
+              <a href="<%= url_for current_user %>">
                 <%= current_user.email %>
                 <b class="caret"></b>
               </a>

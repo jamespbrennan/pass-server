@@ -28,7 +28,7 @@
   // Hover/focus state
   &:hover,
   &:focus {
-    color: $grayDark;
+    color: $gray;
     text-decoration: none;
     background-position: 0 -15px;
 
@@ -231,4 +231,9 @@ input[type="submit"].btn {
 
 .btn-view {
   @extend .btn;
+}
+
+.btn-submit {
+  @extend .btn;
+  @extend .btn-primary;
 }

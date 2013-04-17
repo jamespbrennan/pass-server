@@ -1,0 +1,39 @@
+<h1>Account</h1>
+<h2>Update</h2>
+<%= form_for current_user, html: { class: 'form-horizontal' } do |f| %>
+  <div class="control-group">
+    <%= label_tag :email, 'Email', class: 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :email %>
+    </div>
+  </div>
+  <div class="form-actions">
+    <input class="btn-submit" type="submit" value="Update" />
+  </div>
+  
+<% end %>
+<h2>Change your password</h2>
+<%= form_for current_user, action: update_password_path(current_user), html: { class: 'form-horizontal' } do |f| %>
+  <div class="control-group">
+    <%= label_tag :current_password, 'Current Password', class: 'control-label' %>
+    <div class="controls">
+      <%= f.password_field :current_password %>
+      <span class="error"><%= @current_password_error %></span>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= label_tag :password, 'Password', class: 'control-label' %>
+    <div class="controls">
+      <%= f.password_field :password %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= label_tag :password_confirm, 'Confirm Password', class: 'control-label' %>
+    <div class="controls">
+      <%= f.password_field :password_confirm %>
+    </div>
+  </div>
+  <div class="form-actions">
+    <input class="btn-submit" type="submit" value="Update" />
+  </div>
+<% end %>

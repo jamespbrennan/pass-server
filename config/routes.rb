@@ -8,6 +8,7 @@ PassServer::Application.routes.draw do
     get '/logout', to: 'sessions#destroy', as: 'logout'
 
     resources :users
+    patch 'users/update_password/:id' => 'users#update_password'
     resources :sessions
     resources :devices
 

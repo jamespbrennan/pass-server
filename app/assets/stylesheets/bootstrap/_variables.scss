@@ -86,8 +86,8 @@ $tableBorder:                       #ddd !default; // table and cell border
 
 // Buttons
 // -------------------------
-$btnBackground:                     $white !default;
-$btnBackgroundHighlight:            darken($white, 10%) !default;
+$btnBackground:                     darken($white, 5%) !default;
+$btnBackgroundHighlight:            darken($btnBackground, 5%) !default;
 $btnBorder:                         #ccc !default;
 
 $btnPrimaryBackground:              $primary !default;
@@ -182,9 +182,9 @@ $wellBackground:                  #f5f5f5 !default;
 $navbarCollapseWidth:             979px !default;
 $navbarCollapseDesktopWidth:      $navbarCollapseWidth + 1;
 
-$navbarHeight:                    40px !default;
+$navbarHeight:                    50px !default;
 $navbarBackgroundHighlight:       #ffffff !default;
-$navbarBackground:                darken($navbarBackgroundHighlight, 5%) !default;
+$navbarBackground:                darken($navbarBackgroundHighlight, 2%) !default;
 $navbarBorder:                    darken($navbarBackground, 12%) !default;
 
 $navbarText:                      #777 !default;
