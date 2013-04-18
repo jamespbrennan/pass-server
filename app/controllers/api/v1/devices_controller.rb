@@ -51,7 +51,7 @@ module Api
           device_type = DeviceType.find_by(identifier: '')
         end
 
-        @device.device_type_id = (defined? device.id) ? device.id : nil
+        @device.device_type_id = (defined? device_type.id) ? device_type.id : nil
 
         @device.user_id = user.id
         @device.name = (defined? params[:name]) ? params[:name] : nil
