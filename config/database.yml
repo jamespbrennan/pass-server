@@ -18,3 +18,4 @@ production:
   database: pass_prod
   pool: 5
   timeout: 5000
+  sslmode: disabled
