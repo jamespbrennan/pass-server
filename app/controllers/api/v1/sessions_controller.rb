@@ -101,10 +101,9 @@ module Api
         end
         
         begin
-          # Decrypt the provided token with the device's public key
-          plaintext_token = public_key.public_decrypt Base64::decode64(params[:token]).to_s(2)
-
-          raise Exception if plaintext_token != session.token
+          # Verify the provided token with the device's public key
+          digest = OpenSSL::Digest::SHA512.new
+          raise Exception unless public_key.verify(digest, params[:token], session.token)
         rescue
           # Unsuccessful authentication
           return handle_error('Unsuccessful authentication.', 'invalid_request_error', 401)
