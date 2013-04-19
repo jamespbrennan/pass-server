@@ -2,6 +2,7 @@
 DeviceType.create([
 	{name: 'Unknown', identifier: '', manufacturer: 'Unknown'},
 	{name: 'iPhone Simulator', identifier: 'i386', manufacturer: 'Apple'},
+	{name: 'iPhone Simulator', identifier: 'x86_64', manufacturer: 'Apple'},
 	{name: 'iPod Touch', identifier: 'iPod1,1', manufacturer: 'Apple'},
 	{name: 'iPod Touch (Second Generation)', identifier: 'iPod2,1', manufacturer: 'Apple'},
 	{name: 'iPod Touch (Third Generation)', identifier: 'iPod3,1', manufacturer: 'Apple'},

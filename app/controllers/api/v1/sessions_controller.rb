@@ -102,7 +102,7 @@ module Api
         
         begin
           # Decrypt the provided token with the device's public key
-          plaintext_token = public_key.public_decrypt Base64::decode64(params[:token])
+          plaintext_token = public_key.public_decrypt Base64::decode64(params[:token]).to_s(2)
 
           raise Exception if plaintext_token != session.token
         rescue
