@@ -4,6 +4,11 @@
     <hr>
     <% @device.device_accounts.each do |account| %>
     <h2><%= account.service.name %></h2>
+    <ul>
+      <% account.sessions.each do |session| %>
+      <li><%= (session.is_authenticated) ? 'Successful login' : 'Unsuccessful login attempt '%> at <%= session.updated_at %></li>
+      <% end %>
+    </ul>
     <% end %>
 	</div>
 </article>
