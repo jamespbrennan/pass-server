@@ -23,6 +23,6 @@
 // Semantic grids
 // ---------------------------------------------------
 
-article {
+header, article {
   @extend .row-fluid;
 }
