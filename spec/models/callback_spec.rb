@@ -13,5 +13,19 @@
 require 'spec_helper'
 
 describe Callback do
-  pending "add some examples to (or delete) #{__FILE__}"
+  before do
+    @callback = FactoryGirl.create(:callback)
+  end
+
+  it 'should only allow valid URLs' do
+    @callback.address = 'blah'
+    @callback.should_not be_valid
+    @callback.address = 'ftp://blah.com'
+    @callback.should_not be_valid
+
+    @callback.address = 'http://blah.com'
+    @callback.should be_valid
+    @callback.address = 'https://blah.com'
+    @callback.should be_valid
+  end
 end

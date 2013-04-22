@@ -20,7 +20,7 @@ class Callback < ActiveRecord::Base
 
   def valid_address
     if address_changed?
-      errors.add(:address, 'The address attribute must contain a valid URI.') unless %w[URI::HTTP URI::HTTPS].include URI.parse(self.address).class
+      errors.add(:address, 'The address attribute must contain a valid URI.') unless [URI::HTTP, URI::HTTPS].include? URI.parse(self.address).class
     end
   end
 end
