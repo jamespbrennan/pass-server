@@ -89,7 +89,8 @@ class ApiController < ActionController::Base
 
   def restrict_access
     authenticate_or_request_with_http_token do |token, options|
-      @api_consumer = ApiToken.find_by(token: token).api_consumer
+      api_token = ApiToken.find_by(token: token)
+      @api_consumer = api_token.api_consumer if api_token
     end
 
     !!@api_consumer

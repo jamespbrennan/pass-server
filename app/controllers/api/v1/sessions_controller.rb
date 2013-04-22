@@ -58,7 +58,7 @@ module Api
         @session.remote_ip_address = request.remote_ip
         @session.save
 
-        api_error_check
+        api_error_check && return
 
         # Allow the iframe to be embedded in the services' domain
         response.headers["X-Frame-Options"] = "ALLOW-FROM " + @session.service.url
@@ -79,35 +79,39 @@ module Api
         unathenticated_error if ! @api_consumer.is_a? Device
         device = @api_consumer
 
-        session = Session.find(params[:id])
+        @session = Session.find(params[:id])
 
         # Get the account for that device/service
-        device_account = device.device_accounts(session.service_id).first
+        device_account = device.device_accounts(@session.service_id).first
 
         # Add the device's IP address to the session, regardless if the authentication is sucessful or not
-        session.device_ip_address = request.remote_ip
-        session.device = device
+        @session.device_ip_address = request.remote_ip
+        @session.device = device
+
+        if device_account
+          begin
+            # Create an RSA object from the device's public key
+            public_key = OpenSSL::PKey::RSA.new device_account.public_key
+          rescue OpenSSL::PKey::RSAError
+            return handle_error('A public key is not available for the device.', 'api_error', 500)
+          end
+          
+          begin
+            # Verify the provided token with the device's public key
+            digest = OpenSSL::Digest::SHA512.new
+            raise unless (@session.is_authenticated = public_key.verify(digest, Base64::decode64(params[:token]), @session.token))
+          rescue
+            # Unsuccessful authentication
+            return handle_error('Unsuccessful authentication.', 'invalid_request_error', 401)
+          end
+        else
+          handle_error('There is no account for this device with this service. You must register the device first to the service before authenticating.')
+        end
 
         # Make sure we didn't mess up
-        api_error_check(session) && return
+        api_error_check && return
 
-        session.save
-
-        begin
-          # Create an RSA object from the device's public key
-          public_key = OpenSSL::PKey::RSA.new device_account.public_key
-        rescue OpenSSL::PKey::RSAError
-          return handle_error('A public key is not available for the device.', 'api_error', 500)
-        end
-        
-        begin
-          # Verify the provided token with the device's public key
-          digest = OpenSSL::Digest::SHA512.new
-          raise Exception unless public_key.verify(digest, Base64::decode64(params[:token]), session.token)
-        rescue
-          # Unsuccessful authentication
-          return handle_error('Unsuccessful authentication.', 'invalid_request_error', 401)
-        end
+        @session.save
       end
 
       private

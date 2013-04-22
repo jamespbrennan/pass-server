@@ -136,7 +136,7 @@ describe Api::V1::SessionsController do
         request_payload = {
           id: @session.id,
           device_id: @device.id,
-          token: Base64::encode64(@key_pair.private_encrypt(@session.token))
+          token: Base64::encode64(@key_pair.sign(OpenSSL::Digest::SHA512.new, @session.token))
         }
 
         request.env['HTTP_AUTHORIZATION'] = "Token #{@device.api_token.token}"
