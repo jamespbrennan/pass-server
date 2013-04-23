@@ -5,10 +5,8 @@
 <article>
   <hr />
   <div class="device">
-    <%= link_to device.name, device %><% if device.device_type %> <%= device.device_type.name %><% end %>
-  </div>
-  <div class="device-actions">
     <%= link_to "View", device, :class => "btn-view pull-right" %>
+    <%= link_to device.name, device %><% if device.device_type %> <%= device.device_type.name %><% end %>
   </div>
 </article>
 <% end %>

@@ -11,7 +11,7 @@ class DevicesController < ApplicationController
 	end
 
   def logins
-    @device_account = current_user.device_accounts.find(params[:id])
+    @device_account = current_user.device_accountsl.find(params[:id])
   end
 
 end

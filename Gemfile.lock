@@ -1,3 +1,11 @@
+GIT
+  remote: git://github.com/jamespbrennan/rails-timeago.git
+  revision: 5ba01b36fb65bb74501da7cb8e916f3f5ad67a86
+  specs:
+    rails-timeago (2.2.3)
+      actionpack (>= 3.1)
+      activesupport (>= 3.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -28,7 +36,7 @@ GEM
     annotate (2.5.0)
       rake
     arel (4.0.0.beta2)
-    atomic (1.0.1)
+    atomic (1.1.8)
     bcrypt-ruby (3.0.1)
     bourne (1.4.0)
       mocha (~> 0.13.2)
@@ -92,10 +100,10 @@ GEM
     metaclass (0.0.1)
     method_source (0.8.1)
     mime-types (1.21)
-    minitest (4.7.0)
+    minitest (4.7.3)
     mocha (0.13.3)
       metaclass (~> 0.0.1)
-    multi_json (1.7.1)
+    multi_json (1.7.2)
     net-scp (1.1.0)
       net-ssh (>= 2.6.5)
     net-sftp (2.1.1)
@@ -125,9 +133,6 @@ GEM
       sprockets-rails (~> 2.0.0.rc3)
     rails-observers (0.1.1)
       railties (~> 4.0.0.beta)
-    rails-timeago (2.2.3)
-      actionpack (>= 3.1)
-      activesupport (>= 3.1)
     railties (4.0.0.beta1)
       actionpack (= 4.0.0.beta1)
       activesupport (= 4.0.0.beta1)
@@ -222,7 +227,7 @@ DEPENDENCIES
   rabl
   rails (= 4.0.0.beta1)
   rails-observers
-  rails-timeago (~> 2.0)
+  rails-timeago (~> 2.0)!
   rb-fsevent (~> 0.9)
   redis
   rspec-rails

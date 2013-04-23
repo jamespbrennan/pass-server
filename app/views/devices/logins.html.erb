@@ -6,7 +6,7 @@
       <% @device_account.sessions(limit: 100).each do |session| %>
       <li>
         <%= (session.is_authenticated) ? 'Successful login' : 'Unsuccessful login attempt'%>
-        <%= timeago_tag session.authenticated_at, nojs: true %></li>
+        <%= timeago_tag session.authenticated_at, nojs: true %>.</li>
       <% end %>
     </ul>
   </div>

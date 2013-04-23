@@ -19,7 +19,7 @@ end
 
 gem 'jquery-rails'
 
-gem 'rails-timeago', '~> 2.0'
+gem 'rails-timeago', '~> 2.0', github: 'jamespbrennan/rails-timeago'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
