@@ -1,0 +1,13 @@
+<h1><%= @device_account.device.name %> <small><%= @device_account.service.name %></small></h1>
+<article>
+  <div class="span12">
+    <hr />
+    <ul class="unstyled">
+      <% @device_account.sessions(limit: 100).each do |session| %>
+      <li>
+        <%= (session.is_authenticated) ? 'Successful login' : 'Unsuccessful login attempt'%>
+        <%= timeago_tag session.authenticated_at, nojs: true %></li>
+      <% end %>
+    </ul>
+  </div>
+</article>

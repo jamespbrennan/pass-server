@@ -22,6 +22,7 @@ class Session < ActiveRecord::Base
   validates :service_id, :presence => true
 
   before_create :generate_token
+  before_update :set_authenticated_at
 
   private
 
@@ -32,6 +33,10 @@ class Session < ActiveRecord::Base
 
   def generate_token
 		self.token = SecureRandom.hex
+  end
+
+  def set_authenticated_at
+    self.authenticated_at = Time.zone.now if self.is_authenticated_changed?
   end
 
 end

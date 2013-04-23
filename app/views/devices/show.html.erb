@@ -1,14 +1,18 @@
-<h1><%= @device.name %> <small><% if @device.device_type %> <%= @device.device_type.name %><% end %></small></h1>
+<h1><%= @device.name %></h1>
 <article>
 	<div class="span12">
-    <hr>
+    <hr />
     <% @device.device_accounts.each do |account| %>
+    <%= link_to 'View Logins', logins_path(account), class: 'btn pull-right' %>
     <h2><%= account.service.name %></h2>
-    <ul>
+    <ul class="unstyled">
       <% account.sessions.each do |session| %>
-      <li><%= (session.is_authenticated) ? 'Successful login' : 'Unsuccessful login attempt '%> at <%= session.updated_at %></li>
+      <li>
+        <%= (session.is_authenticated) ? 'Successful login' : 'Unsuccessful login attempt'%>
+        <%= timeago_tag session.authenticated_at, nojs: true %></li>
       <% end %>
     </ul>
+
     <% end %>
 	</div>
 </article>

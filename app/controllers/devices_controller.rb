@@ -10,4 +10,8 @@ class DevicesController < ApplicationController
 		@device = current_user.devices.find(params[:id])
 	end
 
+  def logins
+    @device_account = current_user.device_accounts.find(params[:id])
+  end
+
 end

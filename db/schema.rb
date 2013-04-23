@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130411021125) do
+ActiveRecord::Schema.define(version: 20130422211511) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -89,6 +89,7 @@ ActiveRecord::Schema.define(version: 20130411021125) do
     t.integer  "service_id"
     t.inet     "remote_ip_address"
     t.inet     "device_ip_address"
+    t.datetime "authenticated_at"
   end
 
   add_index "sessions", ["device_id"], name: "index_sessions_on_device_id"

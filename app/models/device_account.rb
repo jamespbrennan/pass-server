@@ -17,8 +17,9 @@ class DeviceAccount < ActiveRecord::Base
 	validates :device_id, :service_id, :public_key, :presence => true
   validate :valid_public_key
 
-  def sessions
-    self.device.sessions.find(:all, conditions: ['service_id = ?', self.service_id])
+  def sessions(options = { limit: 10 })
+    options[:conditions] = ['service_id = ?', self.service_id]
+    self.device.sessions.find(:all, options)
   end
 
   private

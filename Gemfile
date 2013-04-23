@@ -19,10 +19,13 @@ end
 
 gem 'jquery-rails'
 
+gem 'rails-timeago', '~> 2.0'
+
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 
-gem 'annotate', ">=2.5.0"
+gem 'annotate', '>=2.5.0'
+
 gem 'rabl'
 
 # To use ActiveModel has_secure_password
