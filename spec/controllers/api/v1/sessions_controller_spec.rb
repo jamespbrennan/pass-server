@@ -4,7 +4,9 @@ describe Api::V1::SessionsController do
   render_views
 
   before :all do
-    @key_pair = OpenSSL::PKey::RSA.new 2048
+    @key_pair = Crypto::PrivateKey.generate
+    @signing_key = Crypto::SigningKey.new @key_pair
+    @verify_key = Crypto::SigningKey.new @key_pair.public_key
   end
   
   describe '#create' do
@@ -131,12 +133,12 @@ describe Api::V1::SessionsController do
       before do
         @session = FactoryGirl.create(:session)
         @device = FactoryGirl.create(:device)
-        @device_account = FactoryGirl.create(:device_account, device_id: @device.id, service_id: @session.service.id, public_key: @key_pair.public_key.to_pem) 
+        @device_account = FactoryGirl.create(:device_account, device_id: @device.id, service_id: @session.service.id, public_key: @key_pair.public_key) 
 
         request_payload = {
           id: @session.id,
           device_id: @device.id,
-          token: Base64::encode64(@key_pair.sign(OpenSSL::Digest::SHA512.new, @session.token))
+          token: Base64::encode64(signing_key.sign(@session.token, :hex))
         }
 
         request.env['HTTP_AUTHORIZATION'] = "Token #{@device.api_token.token}"
@@ -157,7 +159,7 @@ describe Api::V1::SessionsController do
       before do
         @session = FactoryGirl.create(:session)
         @device = FactoryGirl.create(:device)
-        @device_account = FactoryGirl.create(:device_account, device_id: @device.id, service_id: @session.service.id, public_key: @key_pair.public_key.to_pem) 
+        @device_account = FactoryGirl.create(:device_account, device_id: @device.id, service_id: @session.service.id, public_key: @key_pair.public_key) 
 
         request_payload = {
           id: @session.id,
@@ -190,7 +192,7 @@ describe Api::V1::SessionsController do
       before do
         @session = FactoryGirl.create(:session)
         @device = FactoryGirl.create(:device)
-        @device_account = FactoryGirl.create(:device_account, device_id: @device.id, service_id: @session.service.id, public_key: @key_pair.public_key.to_pem)
+        @device_account = FactoryGirl.create(:device_account, device_id: @device.id, service_id: @session.service.id, public_key: @key_pair.public_key)
       end
 
       it 'should require `id` parameter' do

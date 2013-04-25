@@ -4,6 +4,12 @@ source 'https://rubygems.org'
 gem 'rails', '4.0.0.beta1'
 
 gem 'pg'
+gem 'redis'
+
+gem 'annotate', '>=2.5.0'
+gem 'rails-observers'
+
+gem 'rabl'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -18,22 +24,11 @@ group :assets do
 end
 
 gem 'jquery-rails'
-
 gem 'rails-timeago', '~> 2.0', github: 'jamespbrennan/rails-timeago'
-
-# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 
-gem 'annotate', '>=2.5.0'
-
-gem 'rabl'
-
-# To use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.0.0'
-
-gem 'rails-observers'
-
-gem 'redis'
+gem 'rbnacl'
 
 gem "rspec-rails", :group => [:test, :development]
 group :test do
@@ -44,11 +39,6 @@ group :test do
   gem 'shoulda'
 end
 
-# Use unicorn as the app server
 gem 'unicorn'
 
-# Deploy with Capistrano
 gem 'capistrano'
-
-# To use debugger
-# gem 'debugger'

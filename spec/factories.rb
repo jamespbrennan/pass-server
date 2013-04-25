@@ -21,7 +21,7 @@ FactoryGirl.define do
   end
   
   factory :device_account do |f|
-    f.public_key OpenSSL::PKey::RSA.generate(2048).public_key.to_pem
+    f.public_key Crypto::PrivateKey.generate.public_key
   end
 
   factory :api_token do |f|

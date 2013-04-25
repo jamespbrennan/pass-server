@@ -142,6 +142,8 @@ GEM
     raindrops (0.10.0)
     rake (10.0.3)
     rb-fsevent (0.9.3)
+    rbnacl (1.1.0)
+      ffi
     rdoc (3.12.2)
       json (~> 1.4)
     redis (3.0.3)
@@ -229,6 +231,7 @@ DEPENDENCIES
   rails-observers
   rails-timeago (~> 2.0)!
   rb-fsevent (~> 0.9)
+  rbnacl
   redis
   rspec-rails
   sass-rails (~> 4.0.0.beta1)

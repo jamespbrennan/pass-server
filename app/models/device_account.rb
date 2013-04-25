@@ -27,9 +27,9 @@ class DeviceAccount < ActiveRecord::Base
   def valid_public_key
     if self.public_key_changed?
       begin
-        throw Exception unless OpenSSL::PKey::RSA.new(self.public_key).public?
+        raise unless Crypto::VerifyKey.new(self.public_key, :hex)
       rescue
-        errors.add(:public_key, 'The public_key attribute must contain a valid RSA public key.')
+        errors.add(:public_key, 'The public_key attribute must contain a valid NaCL Crypto public key.')
       end
     end
   end

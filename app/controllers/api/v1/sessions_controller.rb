@@ -90,16 +90,15 @@ module Api
 
         if device_account
           begin
-            # Create an RSA object from the device's public key
-            public_key = OpenSSL::PKey::RSA.new device_account.public_key
-          rescue OpenSSL::PKey::RSAError
+            # Create an verify key from the device's public key
+            verify_key = Crypto::VerifyKey.new device_account.public_key, :hex
+          rescue
             return handle_error('A public key is not available for the device.', 'api_error', 500)
           end
           
           begin
             # Verify the provided token with the device's public key
-            digest = OpenSSL::Digest::SHA512.new
-            raise unless (@session.is_authenticated = public_key.verify(digest, Base64::decode64(params[:token]), @session.token))
+            raise unless (@session.is_authenticated = verify_key.verify(@session.token, params[:token], :hex))
           rescue
             # Unsuccessful authentication
             return handle_error('Unsuccessful authentication.', 'invalid_request_error', 401)
