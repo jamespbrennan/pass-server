@@ -91,17 +91,17 @@ module Api
         if device_account
           begin
             # Create an verify key from the device's public key
-            verify_key = Crypto::VerifyKey.new device_account.public_key, :hex
+            raise unless (verify_key = Crypto::VerifyKey.new(device_account.public_key, :hex))
           rescue
             return handle_error('A public key is not available for the device.', 'api_error', 500)
           end
           
           begin
             # Verify the provided token with the device's public key
-            raise unless (@session.is_authenticated = verify_key.verify(@session.token, params[:token], :hex))
+            @session.is_authenticated = verify_key.verify(@session.token, params[:token], :hex)
           rescue
             # Unsuccessful authentication
-            return handle_error('Unsuccessful authentication.', 'invalid_request_error', 401)
+            handle_error("Unsuccessful authentication. #{@session.is_authenticated}", 'invalid_request_error', 401)
           end
         else
           handle_error('There is no account for this device with this service. You must register the device first to the service before authenticating.')

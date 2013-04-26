@@ -6,7 +6,7 @@ describe Api::V1::SessionsController do
   before :all do
     @key_pair = Crypto::PrivateKey.generate
     @signing_key = Crypto::SigningKey.new @key_pair
-    @verify_key = Crypto::SigningKey.new @key_pair.public_key
+    @verify_key = Crypto::VerifyKey.new @key_pair.public_key
   end
   
   describe '#create' do
@@ -133,12 +133,12 @@ describe Api::V1::SessionsController do
       before do
         @session = FactoryGirl.create(:session)
         @device = FactoryGirl.create(:device)
-        @device_account = FactoryGirl.create(:device_account, device_id: @device.id, service_id: @session.service.id, public_key: @key_pair.public_key) 
+        @device_account = FactoryGirl.create(:device_account, device_id: @device.id, service_id: @session.service.id, public_key: @verify_key.to_s(:hex)) 
 
         request_payload = {
           id: @session.id,
           device_id: @device.id,
-          token: Base64::encode64(signing_key.sign(@session.token, :hex))
+          token: @signing_key.sign(@session.token, :hex)
         }
 
         request.env['HTTP_AUTHORIZATION'] = "Token #{@device.api_token.token}"
@@ -159,7 +159,7 @@ describe Api::V1::SessionsController do
       before do
         @session = FactoryGirl.create(:session)
         @device = FactoryGirl.create(:device)
-        @device_account = FactoryGirl.create(:device_account, device_id: @device.id, service_id: @session.service.id, public_key: @key_pair.public_key) 
+        @device_account = FactoryGirl.create(:device_account, device_id: @device.id, service_id: @session.service.id, public_key: @verify_key.to_s(:hex)) 
 
         request_payload = {
           id: @session.id,
@@ -192,7 +192,7 @@ describe Api::V1::SessionsController do
       before do
         @session = FactoryGirl.create(:session)
         @device = FactoryGirl.create(:device)
-        @device_account = FactoryGirl.create(:device_account, device_id: @device.id, service_id: @session.service.id, public_key: @key_pair.public_key)
+        @device_account = FactoryGirl.create(:device_account, device_id: @device.id, service_id: @session.service.id, public_key: @verify_key.to_s(:hex))
       end
 
       it 'should require `id` parameter' do

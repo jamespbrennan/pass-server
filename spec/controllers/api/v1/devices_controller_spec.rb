@@ -30,10 +30,12 @@ describe Api::V1::DevicesController do
     before :each do
       @service = FactoryGirl.create(:service)
       @device = FactoryGirl.create(:device)
-      @key_pair = OpenSSL::PKey::RSA.new 2048
+      @key_pair = Crypto::PrivateKey.generate
+      @signing_key = Crypto::SigningKey.new @key_pair
+      @verify_key = Crypto::SigningKey.new @key_pair.public_key
 
       request.env['HTTP_AUTHORIZATION'] = "Token #{@device.api_token.token}"
-      post :register, { service_id: @service.id, public_key: @key_pair.public_key.to_pem }
+      post :register, { service_id: @service.id, public_key: @key_pair.public_key.to_s.unpack('H*').first }
     end
 
     it_behaves_like 'a successful JSON response'

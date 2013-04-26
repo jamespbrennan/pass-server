@@ -21,7 +21,7 @@ FactoryGirl.define do
   end
   
   factory :device_account do |f|
-    f.public_key Crypto::PrivateKey.generate.public_key
+    f.public_key Crypto::PrivateKey.generate.public_key.to_s.unpack("H*").first
   end
 
   factory :api_token do |f|
