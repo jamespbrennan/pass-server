@@ -81,3 +81,5 @@ end
 after "deploy:update_code" do
   npm.install
 end
+
+after "deploy", "deploy:migrate"

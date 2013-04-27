@@ -12,6 +12,7 @@
 #  service_id        :integer
 #  remote_ip_address :inet
 #  device_ip_address :inet
+#  authenticated_at  :datetime
 #
 
 class Session < ActiveRecord::Base
