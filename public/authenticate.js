@@ -7847,7 +7847,7 @@ var qrcode = function() {
     qr = qrcode(4, 'M');
     qr.addData(text);
     qr.make();
-    return qr.createTableTag(6);
+    return qr.createTableTag(6, 0);
   };
 
   window.onload = function() {
