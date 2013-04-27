@@ -12,10 +12,10 @@ window._pass = window._pass || {};
   iframe.id = 'pass-login';
   iframe.seamless = true;
   iframe.frameborder = 0;
-  iframe.width = '125px';
-  iframe.height = '125px';
-  iframe.style.width = '125px';
-  iframe.style.height = '125px';
+  iframe.width = '225px';
+  iframe.height = '225px';
+  iframe.style.width = '225px';
+  iframe.style.height = '225px';
   iframe.style.border = '0';
 	
   if( window._pass.target )
