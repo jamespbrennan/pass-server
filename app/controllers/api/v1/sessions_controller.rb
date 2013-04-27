@@ -28,7 +28,10 @@ module Api
       # Returns:
       # => id
       # => service_id
+      # => is_authenticated
       # => user
+      #   => id
+      #   => email 
       #
 
       def get

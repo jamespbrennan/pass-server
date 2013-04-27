@@ -2,7 +2,7 @@ class SessionObserver < ActiveRecord::Observer
   
   def after_update(session)
     if(session.is_authenticated_changed? && session.is_authenticated)
-      data = {session_id: session.id, is_authenticated: session.is_authenticated}.to_json
+      data = { session_id: session.id, is_authenticated: session.is_authenticated }.to_json
 
       #TODO Should this be done with delayed jobs? Will it get to the service in time? How slow is this for 2+ callbacks?
       # Tell the service of the successful authentication
