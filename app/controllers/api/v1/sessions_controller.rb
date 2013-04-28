@@ -38,7 +38,7 @@ module Api
         params.required(:id)
 
         # Grab the device that is trying to authenticate
-        unathenticated_error if ! @api_consumer.is_a? Service
+        unathenticated_error unless @api_consumer.is_a? Service
         service = @api_consumer
 
         @session = service.sessions.find(params[:id])

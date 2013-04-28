@@ -27,9 +27,9 @@ PassServer::Application.routes.draw do
 
         post 'sessions' => 'sessions#create'
         get 'sessions' => 'sessions#get'
-        get 'sessions/:id' => 'sessions#get'
         get 'sessions/authenticate' => 'sessions#authenticate'
         post 'sessions/authenticate' => 'sessions#do_authentication'
+        get 'sessions/:id' => 'sessions#get'
 
         post 'devices' => 'devices#create'
         post 'devices/register' => 'devices#register'

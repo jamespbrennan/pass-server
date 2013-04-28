@@ -35,8 +35,8 @@ class ApiController < ActionController::Base
   #
 
   def api_error_check(record, status_code = 500)
-    message = 'Sorry something went wrong, we\'re lookgin into it. Please retry you\'re request shortly'
-    handle_error(message, 'api_error', status_code, false) if ! record.valid?
+    message = 'Sorry something went wrong, we\'re lookgin into it. Please retry you\'re request shortly.'
+    handle_error(message, 'api_error', status_code, false) unless record.valid?
   end
 
   # == Invalid Request Error Check
