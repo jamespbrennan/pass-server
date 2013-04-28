@@ -1,6 +1,15 @@
 class SessionsController < ApplicationController
 
 	def new
+		api_token = ApiToken.find_by(token: 'dbb051583493abb72b764c70cc415a02')
+
+		if api_token
+    	service = api_token.api_consumer
+			session = Session.create(service_id: service.id)
+			@pass_session_id = session.id
+		else
+			@pass_session_id = 0
+		end
 	end
 	
 	def create

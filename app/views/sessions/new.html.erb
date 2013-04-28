@@ -17,4 +17,21 @@
       <%= submit_tag "Log In", class: "btn-login" %>
     <% end %>
   </div>
+  <div id="login-form"></div>
 </article>
+
+<script>
+  window._pass = window._pass || {};
+  _pass.session_id = <%= @pass_session_id %>;
+  _pass.target = "login-form";
+  _pass.redirect_to = 'https://passauth.net/';
+
+  (function() {
+    var t = document.createElement('script');
+    t.type = 'text/javascript';
+    t.async = true;
+    t.src = 'https://passauth.net/pass.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(t, s);
+  })();
+</script>
