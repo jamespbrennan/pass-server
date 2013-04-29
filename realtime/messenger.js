@@ -5,20 +5,15 @@ var http = require('http')
   , redis = require('redis').createClient();
 
 // Reduce loggin
-io.set('log level', 1);
+// io.set('log level', 1);
 
 redis.subscribe('session_updated');
 redis.on('message', function(channel, m) {
   try { var message = JSON.parse(m); }
   catch (SyntaxError) {
-    console.log("Redis message JSON SyntaxError: " + m)
+    console.log("redis.on message JSON SyntaxError: " + m)
     return false;
   }
-  console.log("typeof(m): " + typeof(m) + " typeof(message): " + typeof(message));
-  console.log("message: " + message + " message.session_id: " + message.session_id + " is_authenticated: " + message.is_authenticated);
-  message.forEach(function(item, index) {
-    console.log("index: " + index + " item: " + item);
-  })
 
   if( typeof message.session_id != "undefined") {
     // Send the message only to the clients in the session_id room
@@ -31,6 +26,5 @@ io.sockets.on('connection', function (socket) {
   socket.on('subscribe', function(session_id) {
     // Join the client to a room based on their session_id
     socket.join("session_" + session_id);
-    io.sockets.in("session_" + session_id).emit('welcome');
   });
 });
