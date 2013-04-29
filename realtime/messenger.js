@@ -14,8 +14,11 @@ redis.on('message', function(channel, m) {
     console.log("Redis message JSON SyntaxError: " + m)
     return false;
   }
-
-  console.log("message: " + message + " message.session_id: " + message.session_id);
+  console.log("typeof(m): " + typeof(m) + " typeof(message): " + typeof(message));
+  console.log("message: " + message + " message.session_id: " + message.session_id + " is_authenticated: " + message.is_authenticated);
+  message.forEach(function(item, index) {
+    console.log("index: " + index + " item: " + item);
+  })
 
   if( typeof message.session_id != "undefined") {
     // Send the message only to the clients in the session_id room
