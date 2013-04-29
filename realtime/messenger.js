@@ -12,7 +12,7 @@ redis.on('message', function(channel, message) {
   // Message comes in as a string, parse it so we can get to it's attributes
   message = JSON.parse(message);
 
-  console.log("Channel: " + channel + " Message: " + message);
+  console.log("Channel: " + channel + " Message: " + message + "message.session_id: " + message.session_id);
 
   io.sockets.in("session_" + message.session_id).emit("channel", "message");
   io.sockets.in("session_" + message.session_id).emit("message", "message");
