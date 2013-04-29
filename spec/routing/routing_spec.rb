@@ -26,10 +26,6 @@ describe SessionsController do
   it 'should route to #new for regular domain' do
     get('http://domain.com/sessions/new').should route_to('sessions#new')
   end
-
-  it 'should not route to #new for api subdomain' do
-    get('http://api.domain.com/sessions/new').should route_to(controller: 'api/v1/errors', action: 'routing', a: 'sessions/new', subdomain: 'api')
-  end
 end
 
 describe DevicesController do

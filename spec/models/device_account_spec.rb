@@ -31,7 +31,7 @@ describe DeviceAccount do
       @device_account = FactoryGirl.create(:device_account, device_id: @device.id, service_id: @service.id)
     end
 
-    it 'should only except a valid RSA public key' do
+    it 'should only except a valid NaCL public key' do
       @device_account.valid?.should be_true
       @device_account.public_key = 'foo'
       @device_account.valid?.should_not be_true

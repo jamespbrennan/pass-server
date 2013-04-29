@@ -12,4 +12,5 @@
 #
 
 class DeviceType < ActiveRecord::Base
+  validates_presence_of :name, :identifier, :manufacturer, :model
 end

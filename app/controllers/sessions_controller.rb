@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
 
 	def new
-		api_token = ApiToken.find_by(token: 'dbb051583493abb72b764c70cc415a02')
+		api_token = ApiToken.find_by(token: PassServer::Application.config.api_token)
 
 		if api_token
     	service = api_token.api_consumer
@@ -31,6 +31,13 @@ class SessionsController < ApplicationController
 			flash.now.alert = "Email and password combination is invalid."
 			render "new"
 		end
+	end
+
+	def callback
+		params.required(:id)
+
+		session = Session.find(params[:id])
+
 	end
 	
 	def destroy

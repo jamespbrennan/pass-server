@@ -22,3 +22,10 @@
   @extend .btn-block;
   @extend .btn-large;
 }
+
+#qr-code-wrapper {
+  text-align: center;
+  #qr-code {
+    display: inline-block;
+  }
+}

@@ -14,6 +14,7 @@ class Callback < ActiveRecord::Base
   belongs_to :service
   belongs_to :callback_type
 
+  validates_presence_of :address, :callback_type_id, :service_id
   validate :valid_address
 
   private

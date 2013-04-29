@@ -1,0 +1,1 @@
+PassServer::Application.config.api_token = 'dbb051583493abb72b764c70cc415a02'

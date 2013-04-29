@@ -20,10 +20,12 @@ describe Device do
     it { should have_many :sessions }
     it { should have_many :device_accounts }
     it { should have_many :services }
+    it { should have_one :api_token }
   end
 
   describe 'validation' do
     it { should validate_presence_of :user_id }
+    it { should validate_presence_of :name }
   end
 
   describe "#create" do
@@ -31,7 +33,7 @@ describe Device do
       @device = FactoryGirl.create(:device)
     end
 
-    it "should generate an api_token" do
+    it "should create an api_token" do
       @device.api_token.should_not be_blank
     end
   end

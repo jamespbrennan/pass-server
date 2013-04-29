@@ -16,14 +16,17 @@
       </div>
       <%= submit_tag "Log In", class: "btn-login" %>
     <% end %>
+    <div id="qr-code-wrapper">
+      <div id="qr-code"></div>
+    </div>
   </div>
-  <div id="login-form"></div>
+  
 </article>
 
 <script>
   window._pass = window._pass || {};
   _pass.session_id = <%= @pass_session_id %>;
-  _pass.target = "login-form";
+  _pass.target = "qr-code";
   _pass.redirect_to = 'https://passauth.net/';
 
   (function() {

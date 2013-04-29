@@ -27,8 +27,13 @@ FactoryGirl.define do
   factory :api_token do |f|
   end
 
+  factory :callback_type do |f|
+    name 'Foo'
+  end
+
   factory :callback do |f|
     service
+    callback_type
     f.address 'https://www.example.com'
   end
 end

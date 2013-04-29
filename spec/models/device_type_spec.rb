@@ -14,5 +14,10 @@
 require 'spec_helper'
 
 describe DeviceType do
-  
+  describe 'validations' do
+    it { should validate_presence_of :name }
+    it { should validate_presence_of :identifier }
+    it { should validate_presence_of :manufacturer }
+    it { should validate_presence_of :model }
+  end
 end
