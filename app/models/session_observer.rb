@@ -25,7 +25,7 @@ class SessionObserver < ActiveRecord::Observer
       end if callbacks
 
       # Tell node of the change
-      $redis.publish 'session_updated', data.to_json
+      $redis.publish 'session_updated', data
     end
   end
   
