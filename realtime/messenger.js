@@ -10,16 +10,11 @@ io.set('log level', 1);
 redis.subscribe('session_updated');
 redis.on('message', function(channel, message) {
   // Message comes in as a string, parse it so we can get to it's attributes
-  console.log("message before: " + message + "message.session_id: " + message.session_id);
+  console.log("message before: " + message + "message.session_id: " + message["session_id"]);
   message = JSON.parse(message);
-  console.log("message after: " + message + "message.session_id: " + message.session_id);
+  console.log("message after: " + message + "message.session_id: " + message["session_id"]);
 
-  console.log("Channel: " + channel + " Message: " + message + "message.session_id: " + message.session_id);
-
-  io.sockets.in("session_" + message.session_id).emit("channel", "message");
-  io.sockets.in("session_" + message.session_id).emit("message", "message");
-
-  if( typeof message.session_id != "undefined") {
+  if( typeof message["session_id"] != "undefined") {
     // Send the message only to the clients in the session_id room
     // channel is an event, likey `session_updated`, `message` is the JSON for the event
     io.sockets.in("session_" + message.session_id).emit(channel, message);
