@@ -23,7 +23,8 @@ redis.on('message', function(channel, message) {
 
 io.sockets.on('connection', function (socket) {
   socket.on('subscribe', function(session_id) {
+    console.log("Joining socket to room: session_" + session_id);
     // Join the client to a room based on their session_id
-      socket.join("session_" + session_id);
+    socket.join("session_" + session_id);
   });
 });
