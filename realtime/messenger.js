@@ -9,10 +9,13 @@ io.set('log level', 1);
 
 redis.subscribe('session_updated');
 redis.on('message', function(channel, m) {
-  // Message comes in as a string, parse it so we can get to it's attributes
-  console.log("message before: " + m + " message.session_id: " + m.session_id);
-  var message = JSON.parse(m);
-  console.log("message after: " + message + " message.session_id: " + message.session_id);
+  try { var message = JSON.parse(m); }
+  catch (SyntaxError) {
+    console.log("Redis message JSON SyntaxError: " + m)
+    return false;
+  }
+
+  console.log("message: " + message + " message.session_id: " + message.session_id);
 
   if( typeof message.session_id != "undefined") {
     // Send the message only to the clients in the session_id room
