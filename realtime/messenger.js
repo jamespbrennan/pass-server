@@ -10,7 +10,9 @@ io.set('log level', 1);
 redis.subscribe('session_updated');
 redis.on('message', function(channel, message) {
   // Message comes in as a string, parse it so we can get to it's attributes
+  console.log("message before: " + message + "message.session_id: " + message.session_id);
   message = JSON.parse(message);
+  console.log("message after: " + message + "message.session_id: " + message.session_id);
 
   console.log("Channel: " + channel + " Message: " + message + "message.session_id: " + message.session_id);
 
