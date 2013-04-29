@@ -8,13 +8,13 @@ var http = require('http')
 io.set('log level', 1);
 
 redis.subscribe('session_updated');
-redis.on('message', function(channel, message) {
+redis.on('message', function(channel, m) {
   // Message comes in as a string, parse it so we can get to it's attributes
-  console.log("message before: " + message + "message.session_id: " + message["session_id"]);
-  message = JSON.parse(message);
-  console.log("message after: " + message + "message.session_id: " + message["session_id"]);
+  console.log("message before: " + m + " message.session_id: " + m.session_id);
+  var message = JSON.parse(m);
+  console.log("message after: " + message + " message.session_id: " + message.session_id);
 
-  if( typeof message["session_id"] != "undefined") {
+  if( typeof message.session_id != "undefined") {
     // Send the message only to the clients in the session_id room
     // channel is an event, likey `session_updated`, `message` is the JSON for the event
     io.sockets.in("session_" + message.session_id).emit(channel, message);
