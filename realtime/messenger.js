@@ -9,7 +9,7 @@ io.set('log level', 1);
 
 redis.subscribe('session_updated');
 redis.on('message', function(channel, m) {
-  try { var message = JSON.parse(JSON.stringifiy(m)); }
+  try { var message = JSON.parse(m); }
   catch (SyntaxError) {
     console.log("Redis message JSON SyntaxError: " + m)
     return false;
