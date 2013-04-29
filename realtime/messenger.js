@@ -5,7 +5,7 @@ var http = require('http')
   , redis = require('redis').createClient();
 
 // Reduce loggin
-// io.set('log level', 1);
+io.set('log level', 1);
 
 redis.subscribe('session_updated');
 redis.on('message', function(channel, m) {
