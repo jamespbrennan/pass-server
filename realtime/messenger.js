@@ -12,7 +12,7 @@ redis.on('message', function(channel, message) {
   // Message comes in as a string, parse it so we can get to it's attributes
   message = JSON.parse(message);
 
-  console.log(message);
+  console.log("Channel: " + channel + " Message: " + message);
 
   io.sockets.in("session_" + message.session_id).emit("channel", "message");
   io.sockets.in("session_" + message.session_id).emit("message", "message");
@@ -28,6 +28,6 @@ io.sockets.on('connection', function (socket) {
   socket.on('subscribe', function(session_id) {
     // Join the client to a room based on their session_id
     socket.join("session_" + session_id);
-    console.log("Clients in:  " + io.sockets.in("session_" + session_id).length);
+    io.sockets.in("session_" + session_id).emit('welcome');
   });
 });
