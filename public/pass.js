@@ -43,7 +43,10 @@ window._pass = window._pass || {};
       if (e.origin == 'https://api.passauth.net') {
         if(e.data.is_authenticated) {
           // If no page is provided to redirect to, just refresh the current page
-          if( ! window._pass.redirect_to ) self.location.reload(true);
+          if( typeof window._pass.redirect_to == "undefined") {
+            self.location.reload(true);
+            return;
+          }
           
           window.location.assign(window._pass.redirect_to);
         } else {

@@ -7838,24 +7838,26 @@ var qrcode = function() {
   return qrcode;
 }();
 
+//---------------------------------------------------------------------
+// Pass Authenticate
+//
 
 (function() {
-  var create_qrcode;
-
-  create_qrcode = function(text) {
-    var qr;
-    qr = qrcode(4, 'M');
+  // Creates a QR code based on a string and returns the HTML
+  var create_qrcode = function(text) {
+    var qr = qrcode(4, 'M');
     qr.addData(text);
     qr.make();
     return qr.createTableTag(6, 0);
   };
 
   window.onload = function() {
-    var qr_wrapper, socket, text;
-    qr_wrapper = document.getElementById('qr-wrapper');
-    text = qr_wrapper.dataset.sessionId + ':' + qr_wrapper.dataset.serviceId + ':' + qr_wrapper.dataset.token;
+    var qr_wrapper = document.getElementById('qr-wrapper')
+    , socket = io.connect('https://api.passauth.net:3001/')
+    , text = qr_wrapper.dataset.sessionId + ':' + qr_wrapper.dataset.serviceId + ':' + qr_wrapper.dataset.token;
+
     qr_wrapper.innerHTML = create_qrcode(text);
-    socket = io.connect('https://api.passauth.net:3001/');
+
     socket.on('session_updated', function(message) {
       if (window.parent != window) {
         return window.parent.postMessage(message, qr_wrapper.dataset.url);
