@@ -7858,7 +7858,7 @@ var qrcode = function() {
     socket = io.connect('https://api.passauth.net:3001/');
     socket.on('session_updated', function(message) {
       if (window.parent != window) {
-        return window.parent.postMessage(message, window.parent.location.origin);
+        return window.parent.postMessage(message, qr_wrapper.dataset.url);
       }
     });
     return socket.emit('subscribe', qr_wrapper.dataset.sessionId);

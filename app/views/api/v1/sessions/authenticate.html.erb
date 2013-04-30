@@ -4,6 +4,6 @@
     <%= javascript_include_tag "/authenticate.js" %>
   </head>
   <body>
-    <div id="qr-wrapper" data-token="<%= @session.token %>" data-session-id="<%= @session.id %>" data-service-id="<%= @session.service_id %>"></div>
+    <div id="qr-wrapper" data-url="<%= @session.service.url %>" data-token="<%= @session.token %>" data-session-id="<%= @session.id %>" data-service-id="<%= @session.service_id %>"></div>
   </body>
 </html>

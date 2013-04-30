@@ -34,7 +34,7 @@ describe Callback do
       @callback.should_not be_valid
 
       @callback.address = 'http://blah.com'
-      @callback.should be_valid
+      @callback.should_not be_valid
       @callback.address = 'https://blah.com'
       @callback.should be_valid
     end
