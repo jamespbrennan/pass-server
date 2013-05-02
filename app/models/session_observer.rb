@@ -21,7 +21,7 @@ class SessionObserver < ActiveRecord::Observer
           
         rescue => e
           #TODO Notify service that the callback is bad, maybe create a delayed job? Probably too late for that
-          logger.error e.to_s
+          session.logger.error e.to_s
         end
       end if callbacks
 
