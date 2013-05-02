@@ -1,6 +1,6 @@
 class SessionObserver < ActiveRecord::Observer
   
-  def after_update(session)
+  def after_save(session)
     if(session.is_authenticated_changed? && session.is_authenticated)
       data = { session_id: session.id, is_authenticated: session.is_authenticated }.to_json
 
