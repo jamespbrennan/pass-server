@@ -34,6 +34,8 @@ class SessionObserver < ActiveRecord::Observer
       # Tell node of the change
       $redis.publish 'session_updated', data
     end
+
+    true
   end
   
 end

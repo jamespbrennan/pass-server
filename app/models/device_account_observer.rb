@@ -28,6 +28,8 @@ class DeviceAccountObserver < ActiveRecord::Observer
         device_account.logger.error e.to_s
       end
     end if callbacks
+
+    true
   end
   
 end
