@@ -19,8 +19,9 @@ class DeviceAccountObserver < ActiveRecord::Observer
           http.request(request)
         end
         
-      rescue
+      rescue => e
         #TODO Notify service that the callback is bad, maybe create a delayed job? Probably too late for that
+        logger.error e.to_s
       end
     end if callbacks
   end
