@@ -24,6 +24,5 @@ module PassServer
     # config.i18n.default_locale = :de
 
     config.active_record.observers = :session_observer, :device_account_observer
-    config.logger = Logger.new(STDOUT)
   end
 end
