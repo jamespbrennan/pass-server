@@ -13,6 +13,7 @@ class DeviceAccountObserver < ActiveRecord::Observer
         uri = URI.parse callback
 
         request = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json'})
+        request.verify_mode = OpenSSL::SSL::VERIFY_NONE
         request.body = data
         response = Net::HTTP.new(uri.host, uri.port).start do |http|
           http.request(request)
