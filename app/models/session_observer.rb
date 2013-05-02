@@ -10,7 +10,7 @@ class SessionObserver < ActiveRecord::Observer
       callbacks = service.callbacks.all(conditions: { callback_type_id: CallbackType.find_by(name: 'authentication') })
 
       callbacks.each do |callback|
-        begin
+        # begin
           uri = URI.parse callback
 
           request = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json'})
@@ -19,10 +19,10 @@ class SessionObserver < ActiveRecord::Observer
             http.request(request)
           end
           
-        rescue => e
+        # rescue => e
           #TODO Notify service that the callback is bad, maybe create a delayed job? Probably too late for that
-          session.logger.error e.to_s
-        end
+          # session.logger.error e.to_s
+        # end
       end if callbacks
 
       # Tell node of the change
