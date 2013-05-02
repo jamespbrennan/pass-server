@@ -13,6 +13,7 @@
 class DeviceAccount < ActiveRecord::Base
 	belongs_to :device
 	belongs_to :service
+  has_one :user, through: :device
 
 	validates :device_id, :service_id, :public_key, :presence => true
   validate :valid_public_key
