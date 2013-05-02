@@ -1,6 +1,6 @@
 class DeviceAccountObserver < ActiveRecord::Observer
   
-  def after_update(device_account)
+  def after_create(device_account)
     data = { id: device_account.user.id, email: device_account.user.email }.to_json
 
     #TODO Should this be done with delayed jobs? Will it get to the service in time? How slow is this for 2+ callbacks?
