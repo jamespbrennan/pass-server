@@ -11,6 +11,7 @@ PassServer::Application.routes.draw do
     patch 'users/update_password/:id' => 'users#update_password'
 
     resources :sessions
+    post 'sessions/callback' => 'sessions#callback', as: 'callback'
 
     resources :devices
     get 'devices/logins/:id' => 'devices#logins', as: 'logins'
