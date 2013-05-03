@@ -16,7 +16,7 @@ class SessionObserver < ActiveRecord::Observer
           request = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json'})
           request.body = data
 
-          http = Net::HTTP.new(callback.address)
+          http = Net::HTTP.new(uri.host, uri.port)
 
           if uri.class == URI::HTTPS
             http.use_ssl = true
