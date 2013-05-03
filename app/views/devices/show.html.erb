@@ -3,7 +3,10 @@
 	<div class="span12">
     <hr />
     <% @device.device_accounts.each do |account| %>
-    <%= link_to 'View Logins', logins_path(account), class: 'btn pull-right' %>
+    <div class="pull-right">
+      <%= link_to 'View Logins', logins_path(account), class: 'btn-view' %>
+      <%= link_to 'Unregister', device_account_path(account), confirm: 'Are you sure?', method: :delete, class: 'btn-destroy' %>
+    </div>
     <h2><%= account.service.name %></h2>
     <ul class="unstyled">
       <% account.sessions.each do |session| %>
@@ -16,4 +19,9 @@
 
     <% end %>
 	</div>
+</article>
+<article>
+  <div class="span12">
+    <%= link_to 'Delete', device_path(@device), confirm: 'Are you sure?', method: :delete, class: 'btn-destroy' %>
+  </div>
 </article>

@@ -8,13 +8,19 @@ PassServer::Application.routes.draw do
     get '/logout' => 'sessions#destroy', as: 'logout'
 
     resources :users
-    patch 'users/update_password/:id' => 'users#update_password'
+    patch 'users/update_password/:id' => 'users#update_password', as: 'update_password'
 
     resources :sessions
     post 'sessions/callback' => 'sessions#callback', as: 'callback'
 
     resources :devices
     get 'devices/logins/:id' => 'devices#logins', as: 'logins'
+
+    resources :device_accounts
+
+    resources :developers
+
+    resources :services
 
     root to: 'devices#index'
   end

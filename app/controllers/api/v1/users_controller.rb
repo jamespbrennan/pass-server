@@ -24,6 +24,33 @@ module Api
 				invalid_request_error_check
 			end
 
+			# == Destroy a user
+			#
+			# Required parameters:
+			# => email
+			# => password
+			#
+			# Returns nothing
+			#
+
+			def destroy
+				params.required(:email)
+        params.required(:password)
+
+        # Authenticate the user
+        begin
+          user = User.find_by(email: params[:email])
+
+          raise ActiveRecord::RecordNotFound unless user && user.authenticate(params[:password])
+        rescue ActiveRecord::RecordNotFound, Exception
+          return handle_error('Invalid email and password combination.', 'invalid_request_error', 401);
+        end
+
+        user.destroy
+
+        render nothing: true
+			end
+
 			private
 
 			# == Error check

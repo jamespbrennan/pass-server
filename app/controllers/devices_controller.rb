@@ -11,7 +11,15 @@ class DevicesController < ApplicationController
 	end
 
   def logins
-    @device_account = current_user.device_accountsl.find(params[:id])
+    @device_account = current_user.device_accounts.find(params[:id])
+  end
+
+  def destroy
+    params.required(:id)
+
+    Device.destroy(params[:id])
+
+    redirect_to action: "index"
   end
 
 end

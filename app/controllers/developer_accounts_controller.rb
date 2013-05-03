@@ -1,0 +1,2 @@
+class DeveloperAccountsController < ApplicationController
+end

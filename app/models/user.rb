@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
 
 	has_many :devices
   has_many :device_accounts, through: :devices
+  has_many :developer_accounts
 
   validates_presence_of :password, :on => :create
   validates_presence_of :email

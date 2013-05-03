@@ -7,7 +7,7 @@
 // -------------------------
 
 body {
-  margin: 60px 0 0 0;
+  margin: 0;
   font-family: $baseFontFamily;
   font-size: $baseFontSize;
   line-height: $baseLineHeight;
@@ -50,4 +50,46 @@ a:focus {
 // Perfect circle
 .img-circle {
   @include border-radius(500px); // crank the border-radius so it works with most reasonably sized images
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+
+html, body {
+  height: 100%;
+}
+
+#wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto -120px;
+  > .container {
+    padding-top: 60px;
+  }
+}
+
+#push, footer {
+  height: 60px;
+}
+footer {
+  background-color: #f5f5f5;
+  text-align: center;
+  padding-top: 20px;
+
+  > ul {  
+    li {
+      display: inline;
+      margin: 0 5px;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  footer {
+    margin-left: -20px;
+    margin-right: -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
 }
