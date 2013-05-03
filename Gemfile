@@ -8,6 +8,7 @@ gem 'redis'
 
 gem 'annotate', '>=2.5.0'
 gem 'rails-observers'
+gem 'activerecord-session_store'
 
 gem 'rabl'
 
