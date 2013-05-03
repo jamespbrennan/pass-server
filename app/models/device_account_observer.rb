@@ -16,8 +16,11 @@ class DeviceAccountObserver < ActiveRecord::Observer
         request.body = data
         
         http = Net::HTTP.new(uri.host, uri.port)
-        http.use_ssl = true
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+        if uri.class == URI::HTTPS
+          http.use_ssl = true
+          http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        end
 
         response = http.start do |h|
           h.request(request)
