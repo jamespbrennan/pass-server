@@ -1,1 +1,1 @@
-PassServer::Application.config.api_token = '8e4c8fdb41d7d67df9460b7e7f782e4b'
+PassServer::Application.config.api_token = 'dbb051583493abb72b764c70cc415a02'
