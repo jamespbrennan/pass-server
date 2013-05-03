@@ -42,6 +42,7 @@ PassServer::Application.routes.draw do
         post 'devices/register' => 'devices#register'
 
         post 'users' => 'users#create'
+        delete 'users' => 'users#destroy'
 
         get '*a' => 'errors#routing'
         post '*a' => 'errors#routing'
