@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-
+	skip_before_action :verify_authenticity_token, only: :callback
 	def new
 		api_token = ApiToken.find_by(token: PassServer::Application.config.api_token)
 
@@ -40,7 +40,7 @@ class SessionsController < ApplicationController
 
     if pass_session.is_authenticated && pass_session.user
       session = ActiveRecord::SessionStore::Session.find_by_pass_session_id(pass_session.id)
-      session.set_attribute!('pass_user_id', pass_session.user.id)
+      session.set_attribute!('user_id', pass_session.user.id)
       session.save
     else
       logger.error 'Receieved a unauthenticated session.'
