@@ -2,9 +2,6 @@
 
 PassServer::Application.config.session_store :active_record_store
 
-# Table 'sessions' already exists - used for pass sessions for this and other services
-ActiveRecord::SessionStore::Session.table_name = 'site_sessions'
-
 module ActiveRecord
   module SessionStore
     class Session
@@ -27,3 +24,6 @@ module ActiveRecord
     end
   end
 end
+
+# Table 'sessions' already exists - used for pass sessions for this and other services
+ActiveRecord::SessionStore::Session.table_name = 'site_sessions'
