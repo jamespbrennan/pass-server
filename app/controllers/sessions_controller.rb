@@ -5,8 +5,7 @@ class SessionsController < ApplicationController
 		api_token = ApiToken.find_by(token: PassServer::Application.config.api_token)
 
 		if api_token
-    	service = api_token.api_consumer
-			session = Session.create(service_id: service.id)
+			session = Session.create(service_id: api_token.api_consumer.id)
 			@pass_session_id = session.id
 		else
 			@pass_session_id = 0
