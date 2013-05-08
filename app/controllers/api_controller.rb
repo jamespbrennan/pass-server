@@ -62,7 +62,7 @@ class ApiController < ActionController::Base
   # Display a JSON error
   #
 
-  def handle_error(message, type = 'invalid_request_error', status_code = 402, include_params = true)
+  def handle_error(message, type = 'invalid_request_error', status_code = 406, include_params = true)
     response = {
       :error => {
         :type => type,

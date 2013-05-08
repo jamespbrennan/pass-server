@@ -79,12 +79,12 @@ module Api
         params.required(:token)
 
         # Grab the device that is trying to authenticate
-        unathenticated_error if ! @api_consumer.is_a? Device
+        unathenticated_error unless @api_consumer.is_a? Device
         device = @api_consumer
 
         @session = Session.find(params[:id])
 
-        return handle_error('An authentication attemp has already been made against this session.', 'invalid_request_error', 406) if ! @session.is_authenticated.nil?
+        return handle_error('An authentication attemp has already been made against this session.', 'invalid_request_error', 406) unless @session.is_authenticated.nil?
 
         # Get the account for that device/service
         device_account = device.device_accounts(@session.service_id).first
