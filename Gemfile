@@ -43,3 +43,7 @@ end
 gem 'unicorn'
 
 gem 'capistrano'
+
+group :development do
+  gem "rails-erd"
+end

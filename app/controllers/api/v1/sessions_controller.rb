@@ -25,6 +25,9 @@ module Api
 
       # == Get a session
       #
+      # Required parameters:
+      # => id
+      #
       # Returns:
       # => id
       # => service_id
@@ -69,9 +72,6 @@ module Api
 
       # == Authenticate a device
       #
-      # Requred parameters:
-      # => id
-      # => token
       #
 
       def do_authentication
@@ -83,6 +83,8 @@ module Api
         device = @api_consumer
 
         @session = Session.find(params[:id])
+
+        return handle_error('An authentication attemp has already been made against this session.', 'invalid_request_error', 406) if ! @session.is_authenticated.nil?
 
         # Get the account for that device/service
         device_account = device.device_accounts(@session.service_id).first
@@ -104,7 +106,7 @@ module Api
             @session.is_authenticated = verify_key.verify(@session.token, params[:token], :hex)
           rescue
             # Unsuccessful authentication
-            handle_error("Unsuccessful authentication. #{@session.is_authenticated}", 'invalid_request_error', 401)
+            handle_error("Unsuccessful authentication.", 'invalid_request_error', 401)
           end
         else
           handle_error('There is no account for this device with this service. You must register the device first to the service before authenticating.')

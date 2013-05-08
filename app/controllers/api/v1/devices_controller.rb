@@ -11,8 +11,8 @@ module Api
       # Required parameters:
       # => email
       # => password
-      # Optional parameters:
       # => name
+      # Optional parameters:
       # => device_identifier
       #
       # Returns:

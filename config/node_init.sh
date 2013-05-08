@@ -1,7 +1,6 @@
 #!/bin/sh
 set -e
 
-# Feel free to change any of the following variables for your app:
 TIMEOUT=${TIMEOUT-60}
 APP_ROOT=/home/deployer/apps/pass-server/current
 APP=$APP_ROOT/realtime/messenger.js
