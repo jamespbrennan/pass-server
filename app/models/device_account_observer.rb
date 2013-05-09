@@ -6,7 +6,7 @@ class DeviceAccountObserver < ActiveRecord::Observer
     #TODO Should this be done with delayed jobs? Will it get to the service in time? How slow is this for 2+ callbacks?
     # Tell the service of the user creation
     service = device_account.service
-    callbacks = service.callbacks.all(conditions: { callback_type_id: CallbackType.find_by(name: 'user_creation') })
+    callbacks = service.callbacks.where(callback_type_id: CallbackType.find_by(name: 'user_creation')).to_a
 
     callbacks.each do |callback|
       begin

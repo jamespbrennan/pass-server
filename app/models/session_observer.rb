@@ -8,7 +8,7 @@ class SessionObserver < ActiveRecord::Observer
         #TODO Should this be done with delayed jobs? Will it get to the service in time? How slow is this for 2+ callbacks?
         # Tell the service of the successful authentication
         service = session.service
-        callbacks = service.callbacks.all(conditions: { callback_type_id: CallbackType.find_by(name: 'authentication') })
+        callbacks = service.callbacks.where(callback_type_id: CallbackType.find_by(name: 'authentication')).to_a
 
         callbacks.each do |callback|
           begin
