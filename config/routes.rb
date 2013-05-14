@@ -18,7 +18,10 @@ PassServer::Application.routes.draw do
 
     resources :device_accounts
 
-    resources :developers
+    get 'about' => 'about#index'
+    
+    get 'developers' => 'developers#index'
+    get 'developers/api' => 'developers#api', as: 'api'
 
     resources :services
 
@@ -42,6 +45,7 @@ PassServer::Application.routes.draw do
         post 'devices/register' => 'devices#register'
 
         post 'users' => 'users#create'
+        get 'users' => 'users#get'
         delete 'users' => 'users#destroy'
 
         get '*a' => 'errors#routing'

@@ -63,9 +63,10 @@ html, body {
   min-height: 100%;
   height: auto !important;
   height: 100%;
-  margin: 0 auto -120px;
+  margin: 0 auto -60px;
+  padding-bottom: 20px;
   > .container {
-    padding-top: 60px;
+    padding-top: 50px;
   }
 }
 

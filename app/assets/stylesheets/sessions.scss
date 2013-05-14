@@ -6,8 +6,12 @@
   @extend .span4;
   @extend .offset4;
 
-  h1 {
+  h1, .description {
     text-align: center;
+  }
+
+  .description {
+    margin: 25px 0;
   }
 
   input[type="text"], input[type="password"] {

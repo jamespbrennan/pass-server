@@ -1,24 +1,34 @@
 <article>
   <div class="login">
+    <br>
+    <div class="description">
+      <p>Pass is a new experimental authentication system.</p>
+      <%= link_to 'Learn more', about_path, class: 'btn center' %>
+    </div>
+    
     <h1>Log In</h1>
+
+    <div id="qr-code-wrapper">
+      <div id="qr-code"></div>
+    </div>
+    <button id="login-alt" class="btn-link pull-right ">Alternate login</button>
+
     <%= form_tag sessions_path do %>
-      <div class="control-group">
+      <div class="control-group login-alt">
         <label class="control-label"><%= label_tag :email %></label>
         <div class="controls">
           <%= text_field_tag :email, params[:email], autofocus: true %>
         </div>
       </div>
-      <div class="control-group">
+      <div class="control-group login-alt">
         <label class="control-label"><%= label_tag :password %></label>
         <div class="controls">
           <%= password_field_tag :password %>
         </div>
       </div>
-      <%= submit_tag "Log In", class: "btn-login" %>
+      <%= submit_tag "Log In", class: "btn-login login-alt" %>
     <% end %>
-    <div id="qr-code-wrapper">
-      <div id="qr-code"></div>
-    </div>
+    
   </div>
   
 </article>

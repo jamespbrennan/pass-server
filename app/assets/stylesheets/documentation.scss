@@ -1,0 +1,16 @@
+#documentation {
+  td {
+    padding: 10px;
+    vertical-align: top;
+  }
+  .description {
+    
+  }
+
+  .example {
+    font-family: monospace;
+    white-space: pre;
+    border: 1px solid $grayLighter;
+    background: lighten($grayLighter, 3%);
+  }
+}

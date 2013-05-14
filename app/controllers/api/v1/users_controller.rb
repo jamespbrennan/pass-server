@@ -24,6 +24,26 @@ module Api
 				invalid_request_error_check
 			end
 
+			# == Get a user
+			#
+			# Required parameters:
+			# => id
+			#
+			# Returns:
+			# => id
+			# => email
+			#
+
+			def get
+				params.required(:id)	
+
+				# Grab the service that is trying to authenticate
+        unathenticated_error unless @api_consumer.is_a? Service
+        service = @api_consumer
+
+				@user = service.users.find params[:id]
+			end
+
 			# == Destroy a user
 			#
 			# Required parameters:
@@ -42,7 +62,7 @@ module Api
           user = User.find_by(email: params[:email])
 
           raise ActiveRecord::RecordNotFound unless user && user.authenticate(params[:password])
-        rescue ActiveRecord::RecordNotFound, Exception
+        rescue ActiveRecord::RecordNotFound
           return handle_error('Invalid email and password combination.', 'invalid_request_error', 401);
         end
 

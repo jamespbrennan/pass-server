@@ -1,2 +1,2 @@
 object @session
-attributes :id, :service_id, :created_at
+attributes :id, :created_at

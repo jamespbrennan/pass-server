@@ -4,4 +4,8 @@ class DevelopersController < ApplicationController
     
   end
 
+  def api
+
+  end
+
 end

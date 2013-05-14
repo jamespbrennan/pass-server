@@ -75,6 +75,7 @@
 
 // Semantic classes must be defined in this file for @extend to work properly
 @import "sessions";
+@import "documentation";
 
 // Utility classes
 @import "bootstrap/utilities"; // Has to be last to override when necessary
