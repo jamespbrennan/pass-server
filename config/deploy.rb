@@ -1,6 +1,6 @@
 require "bundler/capistrano"
 
-server "ec2-54-214-87-2.us-west-2.compute.amazonaws.com", :web, :app, :db, primary: true
+server "passauth.net", :web, :app, :db, primary: true
 
 set :application, "pass-server"
 set :user, "deployer"

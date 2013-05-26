@@ -4,17 +4,26 @@
 </p>
 <h1>How does it work?</h1>
 <p>
-  
+  Authenticaiton with Pass is a simple as scanning a QR code with your smartphone and you're logged in.
 </p>
 <h1>No really, how does it work?</h1>
 <p>
-  
+  A mix of WebSockets, a Rails REST API, an iOS application, and Node.js are used to orchstrate the whole process. Take a look at the source if you're interested. The Node and Rails server can be found <%= link_to 'here', 'https://github.com/jamespbrennan' %>, a Ruby API <%= link_to 'here', 'https://github.com/jamespbrennan' %>, and the iOS application <%= link_to 'here', 'https://github.com/jamespbrennan' %>.
 </p>
 <h1>Is it secure?</h1>
 <p>
-  Pass uses secure one-time-use tokens and strong elliptic curve cryptography.
+  Pass uses secure one-time-use tokens and strong elliptic curve cryptography. The <%= link_to 'Curve25519 algorithm', 'http://cr.yp.to/ecdh.html' %> is used for it's speed and security to create signatures and authenticate you to the centralized authentication server. 
 </p>
+<h1>Cool, how do I use it?</h1>
+<p>
+  There is currenly only a client available for iOS devices. Simply download the application and create an account.
+</p>
+<p><%= link_to 'Download the App', 'http://apple.com', class: 'btn' %></p>
+<p>
+  <%= link_to 'Developers', developers_url %> can easily integrate Pass into their sites to enable users to login via Pass.
+</p>
+<p><%= link_to 'Checkout the API', developers_url, class: 'btn' %></p>
 <h1>Who made this?</h1>
 <p>
-  Pass was created by <a target="_blank" href="http://www.jamesbrennan.ca">James Brennan</a>.
+  Pass was created by web developer <%= link_to 'James Brennan', 'http://www.jamesbrennan.ca' %>. James is currently seeking full time employment, so <%= link_to 'drop him a line', 'mailto:james@jamesbrennan.ca' %> if you're interested in hiring him.
 </p>
